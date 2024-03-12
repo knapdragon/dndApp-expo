@@ -1,27 +1,25 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
 import { useNavigation, NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import styles from '../styles.tsx';
-import Home from '../components/Home.tsx';
-import Sheets from '../components/Sheets.tsx';
-import Groups from '../components/Groups.tsx';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const Stack = createStackNavigator();
+import styles from '../styles.tsx';
+import Home from './Home.tsx';
+import Sheets from './Sheets.tsx';
+import Groups from './Groups.tsx';
+
+const Stack = createNativeStackNavigator();
 
 const Notes: React.FC = () => {
   const navigation = useNavigation();
   return (
-    <View>
-      <Text>Notes</Text>
+    <View style={styles.container}>
 
-      <NavigationContainer>
         <Stack.Navigator initialRouteName='Notes'>
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Sheets" component={Sheets} />
           <Stack.Screen name="Groups" component={Groups} />
         </Stack.Navigator>
-      </NavigationContainer>
     </View>
   );
 };

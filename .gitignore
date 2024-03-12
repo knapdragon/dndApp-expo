@@ -396,3 +396,11 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+assets/sample-assets/adaptive-icon.png
+assets/sample-assets/favicon.png
+assets/sample-assets/icon.png
+assets/sample-assets/splash.png
+screens/GroupsScreen.tsx
+screens/HomeScreen.tsx
+screens/NotesScreen.tsx
+screens/SheetsScreen.tsx

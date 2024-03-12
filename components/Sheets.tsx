@@ -1,20 +1,19 @@
 import React from 'react';
 import { View, Text, Button, FlatList } from 'react-native';
 import { useNavigation, NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import styles from '../styles.tsx';
 import exampleData from '../userdata/data.js';
-import Home from '../components/Home.tsx';
-import Notes from '../components/Notes.tsx';
-import Groups from '../components/Groups.tsx';
+import Home from './Home.tsx';
+import Notes from './Notes.tsx';
+import Groups from './Groups.tsx';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const Sheets: React.FC = () => {
   const navigation = useNavigation();
   return (
-    <View>
-      <Text style={styles.container}>Sheets</Text>
+    <View style={styles.container}>
 
       <FlatList 
         data={exampleData.sheets}
@@ -28,13 +27,11 @@ const Sheets: React.FC = () => {
           )}
           keyExtractor={(item) => item.id.toString()}/>
       
-      <NavigationContainer>
         <Stack.Navigator initialRouteName='Sheets'>
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Sheets" component={Notes} />
           <Stack.Screen name="Groups" component={Groups} />
         </Stack.Navigator>
-      </NavigationContainer>
     </View>
   );
 };

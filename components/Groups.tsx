@@ -1,20 +1,19 @@
 import React from 'react';
 import { View, Text, Button, FlatList } from 'react-native';
 import { useNavigation, NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import exampleData from '../userdata/data.js';
 import styles from '../styles.tsx';
-import Home from '../components/Home.tsx';
-import Sheets from '../components/Sheets.tsx';
-import Notes from '../components/Notes.tsx';
+import Home from './Home.tsx';
+import Sheets from './Sheets.tsx';
+import Notes from './Notes.tsx';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const Groups: React.FC = () => {
   const navigation = useNavigation();
   return (
-    <View style={[styles.container, {alignItems: 'center', justifyContent: 'center'}]}>
-      <Text style={styles.title}>Social Groups</Text>
+    <View style={styles.container}>
 
       <FlatList 
         data={exampleData.groups}
@@ -29,13 +28,11 @@ const Groups: React.FC = () => {
           )}
           keyExtractor={(item) => item.id.toString()}/>
 
-      <NavigationContainer>
         <Stack.Navigator initialRouteName='Groups'>
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Sheets" component={Sheets} />
           <Stack.Screen name="Groups" component={Notes} />
         </Stack.Navigator>
-      </NavigationContainer>
     </View>
   );
 };
