@@ -7,14 +7,16 @@ import Sheets from './Sheets.tsx';
 import Notes from './Notes.tsx';
 import Groups from './Groups.tsx';
 
-const Stack = createStackNavigator();
-
 const Settings: React.FC = () => {
-  const navigation = useNavigation();
+  const settingsOptions = [
+    {title: 'Theme', subTitle: 'Change the app colour scheme.', onPress: () => {}}
+  ];
+
   return (
       <View style={styles.container}>
         <Text style={styles.title}>Settings</Text>
 
+        
       </View>
   );
 };

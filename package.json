@@ -18,6 +18,9 @@
     "expo-status-bar": "~1.11.1",
     "react": "18.2.0",
     "react-native": "0.73.4",
+    "react-native-paper": "^5.12.3",
+    "react-native-popup-menu": "^0.16.1",
+    "react-native-vector-icons": "^10.0.3",
     "styled-components": "^6.1.8"
   },
   "devDependencies": {
