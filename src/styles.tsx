@@ -6,6 +6,10 @@ const styles = {
     backgroundColor: '#fff',
   },
 
+  frame: {
+    marginTop: -10,
+  },
+
   title: {
     marginTop: 28,
     marginLeft: 15,

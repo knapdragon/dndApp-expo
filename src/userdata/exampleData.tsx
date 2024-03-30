@@ -4,7 +4,7 @@ const exampleData = {
             id: 1,
             title: "Nohn Coe",
             image: "",
-            race: "Aaracokra",
+            race: "Aarakocra",
             class: "Cleric",
         },
         {

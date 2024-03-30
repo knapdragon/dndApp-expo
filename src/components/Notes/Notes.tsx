@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import styles from '../styles.tsx';
-import MainMenu from './MainMenu.tsx';
+import styles from '../../styles.tsx';
+import MainMenu from '../MainMenu.tsx';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
-import notesData from '../userdata/notesData.js';
+import notesData from './../../userdata/notesData.tsx';
 
 const Notes: React.FC = () => {
   return (

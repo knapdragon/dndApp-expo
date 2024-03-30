@@ -10,9 +10,9 @@ import styles from './src/styles.tsx';
 import MainMenu from './src/components/MainMenu.tsx';
 import Home from './src/components/Home.tsx';
 import Settings from './src/components/Settings.tsx';
-import Sheets from './src/components/Sheets.tsx';
-import Notes from './src/components/Notes.tsx';
-import Groups from './src/components/Groups.tsx';
+import Sheets from './src/components/Sheets/Sheets.tsx';
+import Notes from './src/components/Notes/Notes.tsx';
+import Groups from './src/components/Groups/Groups.tsx';
 
 const Tab = createBottomTabNavigator();
 
