@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import { Appbar, Menu as PaperMenu } from 'react-native-paper';
 import styles from '../../styles.tsx';
-import MainMenu from '../MainMenu.tsx';
-import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
-import groupsData from './../../userdata/groupsData.tsx';
+import groupsData from '../../userdata/groupsData.tsx';
 
 type ItemData = {
 	id: number,
@@ -36,8 +35,21 @@ const Item = ({item, onPress, backgroundColor, textColor}: ItemProps) => (
 	</TouchableOpacity>
 );
 
-const Groups: React.FC = () => {
+interface Props {
+  navigation: any,
+}
+
+const Groups: React.FC<Props> = ({ navigation }) => {
+  const [newMenuVisible, setNewMenuVisible] = useState(false);
+  const openNewMenu = () => setNewMenuVisible(true);
+  const closeNewMenu = () => setNewMenuVisible(false);
+
   const [selectedId, setSelectedId] = useState<string>();
+  const handleItemSelect = (item: ItemData) => {
+    setSelectedId(item.id.toString())
+    navigation.navigate("Group")
+  }
+
   const renderItem = ({item}: {item: ItemData}) => {
     const backgroundColor = item.id.toString() === selectedId ? '#6e3b6e' : '#f9c2ff';
     const color = item.id.toString() === selectedId ? 'white' : 'black';
@@ -45,7 +57,7 @@ const Groups: React.FC = () => {
     return (
       <Item
         item={item}
-        onPress={() => setSelectedId(item.id.toString())}
+        onPress={() => handleItemSelect(item)}
         backgroundColor={backgroundColor}
         textColor={color}
       />
@@ -54,16 +66,23 @@ const Groups: React.FC = () => {
   
   return (
     <View style={styles.container}>
-      <View style={[styles.frame, {backgroundColor: '#228'}]}> 
-        <Text style={[styles.title, {color: '#fff'}]}>Social Groups</Text>
-        <Menu style={[styles.menu, styles.newMenu]}>
-          <MenuTrigger text='New...' />
-            <MenuOptions>
-              <MenuOption onSelect={() => {}} text='Group'/>
-            </MenuOptions>
-        </Menu>
-
-        <MainMenu />
+      <View> 
+        <Appbar.Header style={{backgroundColor: '#55a'}}>
+            <Appbar.Content title="Groups" titleStyle={{color: '#fff'}}/>
+            <PaperMenu
+              visible={newMenuVisible}
+              onDismiss={closeNewMenu}
+              anchor={
+              <Appbar.Action 
+                color='white' 
+                icon="plus-outline" 
+                onPress={() => openNewMenu}
+                />
+              }>
+              <PaperMenu.Item title="Group" />
+            </PaperMenu>
+            <Appbar.Action color='white' icon="menu" onPress={() => navigation.navigate('Settings')}/>
+          </Appbar.Header> 
       </View>
 
       <FlatList 

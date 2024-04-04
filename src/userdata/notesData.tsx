@@ -1,12 +1,17 @@
+export type Note = {
+    id: number,
+    title: string,
+    content: string | typeof Image,
+    colour: string,
+}
+
 const notesData = {
-    notes: [
-        {
-            id: 1,
-            title: "Note 1",
-            content: "Lorem ipsum dolor sit amet",
-            colour: "",
-        }
-    ],
+    first: {
+        id: 1,
+        title: "First Note",
+        content: "This is a test note.",
+        colour: 'dark-green',
+    }
 };
 
 export default notesData;

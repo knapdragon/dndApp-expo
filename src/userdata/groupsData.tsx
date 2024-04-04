@@ -1,3 +1,13 @@
+export type Group = {
+    id: number,
+    title: string,
+    image: typeof Image,
+    labels: Array<String>,
+    currentPlayers: number,
+    maxPlayers: number,
+    description: string,
+}
+
 const groupsData = {
     groups: [
         {

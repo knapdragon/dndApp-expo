@@ -40,9 +40,8 @@ const styles = {
   },
 
   listItem: {
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+    padding: 15,
+    borderTopColor: 'black',
   },
 };
 

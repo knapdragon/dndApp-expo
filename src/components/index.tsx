@@ -1,6 +1,6 @@
 import Home from './Home.tsx';
-import Sheets from './Sheets/Sheets.tsx';
-import Notes from './Notes/Notes.tsx';
-import Groups from './Groups/Groups.tsx';
+import Sheets from './Sheets/SheetsMain.tsx';
+import Notes from './Notes/NotesMain.tsx';
+import Groups from './Groups/GroupsMain.tsx';
 
 export { Home, Sheets, Notes, Groups }

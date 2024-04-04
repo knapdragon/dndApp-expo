@@ -1,14 +1,19 @@
 import React from 'react';
 import { View, Text, Button, Pressable } from 'react-native';
+import { Appbar } from 'react-native-paper';
 import styles from '../styles.tsx';
-import MainMenu from './MainMenu.tsx';
 
-const Home: React.FC = () => {
+interface Props {
+  navigation: any,
+}
+
+const Home: React.FC<Props> = ({ navigation }) => {
   return (
       <View style={styles.container}>
-        <Text style={styles.title}>Home</Text>
-        
-        <MainMenu />
+        <Appbar.Header style={{backgroundColor: '#ccc'}}>
+          <Appbar.Content title="Home" />
+          <Appbar.Action icon="menu" onPress={() => navigation.navigate('Settings')}/>
+        </Appbar.Header>
         
       </View>
   );

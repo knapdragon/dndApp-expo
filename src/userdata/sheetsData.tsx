@@ -1,3 +1,16 @@
+import { DND_Class } from "../assets/srd_compendium/classes";
+import { Race } from "../assets/srd_compendium/races";
+
+export type Sheet = {
+    id: number,
+    name: string,
+    image: typeof Image,
+    charLvl: number,
+    race: Race,
+    mainClass: DND_Class,
+    multiClass: Array<DND_Class>,
+} 
+
 const sheetsData = {
     sheets: [
         {
