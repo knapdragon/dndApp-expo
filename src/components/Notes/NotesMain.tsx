@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
-import { Appbar, Menu as PaperMenu, Card, Button } from 'react-native-paper';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { Appbar, Card, Button, Dialog, PaperProvider, Portal } from 'react-native-paper';
+
+// styling
 import styles from '../../styles.tsx';
+
+// data
 import notesData from '../../userdata/notesData.json';
+import Settings from '../Settings.tsx';
+import MainMenu from '../MainMenu.tsx';
+import NewMenu from '../NewMenu.tsx';
 
 // Rendering FlatList items
 type ItemData = {
 	id: number,
   title: string,
-  cover: string,
   content: string,
   colour: string,
   };
@@ -37,10 +43,16 @@ interface Props {
 }
 
 const Notes: React.FC<Props> = ({ navigation }) => {
+  const [tabOrigin, setTabOrigin] = useState('Notes');
+
   // Appbar handler
+  const [mainMenuVisible, setMainMenuVisible] = useState(false);
+  const [settingsVisible, setSettingsVisible] = useState(false);
+  const closeSettingsDialog = () => {
+    setSettingsVisible(!settingsVisible);
+  }
+
   const [newMenuVisible, setNewMenuVisible] = useState(false);
-  const openNewMenu = () => setNewMenuVisible(true);
-  const closeNewMenu = () => setNewMenuVisible(false);
 
   // Rendering FlatList items
   const [selectedId, setSelectedId] = useState<string>();
@@ -63,55 +75,70 @@ const Notes: React.FC<Props> = ({ navigation }) => {
     );
   };
   
-    // Note deletion
-  const deleteNote = () => {
+  /**
+   * Create a new note with the given data. 
+   * */
+  const newNote = () => {
 
+  }
+
+  /** 
+   * Delete a note with the given id. 
+   * */
+  const deleteNote = () => {
+    
   }
 
   // Notes begins
   return (
     <View style={styles.container}>
-      <Appbar.Header style={{backgroundColor: '#f55'}}>
-          <Appbar.Content title="Sheets" titleStyle={{color: '#000'}} />
-          <PaperMenu
-            visible={newMenuVisible}
-            onDismiss={closeNewMenu}
-            anchor={
-            <Appbar.Action
-              color='black'
-              icon="plus-outline" 
-              onPress={() => openNewMenu}/>
-            }>
-            <PaperMenu.Item title="Note"/>
-            <PaperMenu.Item title="Folder" />
-          </PaperMenu>
-          <Appbar.Action color='black' icon="menu" onPress={() => navigation.navigate('Settings')}/>
-        </Appbar.Header> 
+      <Appbar.Header style={{backgroundColor: '#4a4'}}>
+        <Appbar.Content title="Notes" titleStyle={{color: '#000'}}/>
+            <NewMenu 
+              tabOrigin={tabOrigin}
+              enabled={newMenuVisible}
+              setNewMenuVisible={setNewMenuVisible}
+              newItem={newNote}
+              />
+            <MainMenu 
+              tabOrigin={tabOrigin}
+              enabled={mainMenuVisible}
+              setSettingsVisible={setSettingsVisible}
+              setMainMenuVisible={setMainMenuVisible}
+              />
+      </Appbar.Header>
 
       {/* Main content starts here */}
       <FlatList 
         data={notesData}
         numColumns={2}
         keyExtractor={(item) => item.id.toString()}
+        extraData={selectedId}
         renderItem={(item) => {
           return (
-          <Card>
-            <Card.Title title={item.item.title}/>
-            <Card.Content>
-              <Text style={styles.title}>{item.item.title}</Text>
-              <Text>{item.item.content}</Text>
-            </Card.Content>
-            <Card.Cover source={{uri: item.item.cover}} />  {/* optional image (uses url) */}
-            <Card.Actions>
-              <Button onPress={() => navigation.navigate('Note')}>Edit</Button>
-              <Button onPress={() => deleteNote}>Delete</Button>
-            </Card.Actions>
-          </Card>
-          )
-        }}
-		    extraData={selectedId}
-        />
+            <View style={[styles.container, {justifyContent: 'space-around'}]}>
+              <Card mode='contained' style={styles.card}>
+                <Card.Title title={item.item.title}
+                  style={styles.title}/>
 
+                <Card.Content>
+                  <Text>{item.item.content}</Text>
+                </Card.Content>
+
+                <Card.Actions>
+                  <Button onPress={() => navigation.navigate('Note')}>Edit</Button>
+                  <Button onPress={() => deleteNote}>Delete</Button>
+                </Card.Actions>
+              </Card>
+            </View>
+          )
+        }}/>
+
+      <PaperProvider>
+        <Portal>
+          <Settings tabOrigin={tabOrigin} enabled={settingsVisible} closeDialog={closeSettingsDialog}/>
+        </Portal>
+      </PaperProvider>
     </View>
   );
 };

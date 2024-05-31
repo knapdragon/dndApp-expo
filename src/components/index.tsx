@@ -1,3 +1,4 @@
+import { View } from 'react-native';
 import Home from './Home.tsx';
 import Sheets from './Sheets/SheetsMain.tsx';
 import Notes from './Notes/NotesMain.tsx';

@@ -2,14 +2,12 @@
     {
         "id": 1,
         "title": "First Note",
-        "cover": "",
         "content": "This is a test note.",
         "colour": "dark-green"
     },
     {
         "id": 2,
         "title": "Second Note",
-        "cover": "",
         "content": "This is also a test note.",
         "colour": "dark-blue"
     }

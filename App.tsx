@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, useColorScheme } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+
+// Styling
 import { PaperProvider, useTheme, MD3LightTheme as DefaultTheme, MD3DarkTheme, Appbar } from 'react-native-paper';
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation'
-import { useNavigation, NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import styles from './src/styles.tsx';
+
+// Data
 import Home from './src/components/Home.tsx';
 import Sheets from './src/components/Sheets/SheetsMain.tsx';
 import Notes from './src/components/Notes/NotesMain.tsx';
 import Groups from './src/components/Groups/GroupsMain.tsx';
+import Settings from './src/components/Settings.tsx';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -28,7 +32,7 @@ export default function App() {
         <SafeAreaView style={styles.container}>
             <StatusBar style="auto" />
 
-            <Tab.Navigator 
+            <Tab.Navigator
               barStyle={[{backgroundColor: '#ccc'}, {borderTopWidth: 3}, {borderTopColor: 'grey'}]}
               initialRouteName='Home' 
               backBehavior={'history'}

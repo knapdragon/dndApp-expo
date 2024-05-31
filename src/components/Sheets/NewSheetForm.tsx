@@ -4,10 +4,10 @@ import { Appbar, Menu as PaperMenu, TextInput } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import styles from '../../styles.tsx';
 import sheetsData from '../../userdata/sheetsData.js';
-import racesSRD from './../../assets/srd_compendium/JSON/5e-SRD-Races.json';
-import racesCustom from './../../userdata/compendium_custom/races_custom.js';
-import classesSRD from './../../assets/srd_compendium/JSON/5e-SRD-Classes.json';
-import classesCustom from './../../userdata/compendium_custom/classes_custom.js';
+import racesSRD from '../../assets/srd_compendium/JSON/5e-SRD-Races.json';
+import racesCustom from '../../userdata/compendium_custom/races_custom.js';
+import classesSRD from '../../assets/srd_compendium/JSON/5e-SRD-Classes.json';
+import classesCustom from '../../userdata/compendium_custom/classes_custom.js';
 
 interface Props {
   navigation: any

@@ -1,42 +1,34 @@
 import React, { useState } from 'react';
-import { Text, View, Modal, Pressable } from 'react-native';
-import { Button, Switch } from 'react-native-paper';
-import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
+import { View } from 'react-native';
+import { Appbar, Menu as PaperMenu } from 'react-native-paper';
 import styles from '../styles';
 
-const MainMenu: React.FC = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const toggleTheme = () => {
+interface Props {
+  tabOrigin: string,
+  enabled: boolean,
+  setSettingsVisible: (val: boolean) => void,
+  setMainMenuVisible: (val: boolean) => void,
+}
 
-  }
-  
+const MainMenu: React.FC<Props> = ({ tabOrigin, enabled, setSettingsVisible, setMainMenuVisible }) => {
+  const actionColor = tabOrigin === 'Groups' ? '#fff' : '#000';
   return (
     <View>
-      <Menu style={[styles.menu, styles.mainMenu]}>
-        <MenuTrigger text='Options' />
-          <MenuOptions>
-            <MenuOption onSelect={() => {}} />
-            <MenuOption onSelect={() => {}} />
-            <MenuOption onSelect={() => {setModalVisible(true)}} text='Settings'/>
-          </MenuOptions>
-      </Menu>
-
-      <Modal
-        animationType="slide"
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible)
-        }}>
-          <View style={styles.container}>
-            <Text style={styles.text}>Settings</Text>
-
-            <Button onPress={() => setModalVisible(false)} children={"Close"}/> 
-
-            <Text style={{fontSize: 12}}>Theme</Text>
-            <Switch
-              onValueChange={toggleTheme}/>
-          </View>
-      </Modal>
+      {/* Settings menu */}
+      <PaperMenu
+      visible={enabled}
+      onDismiss={() => setMainMenuVisible(false)}
+      anchor={
+        <Appbar.Action 
+        color={actionColor}
+        icon="dots-vertical" 
+        onPress={() => setMainMenuVisible(true)}/>
+      }>
+      <PaperMenu.Item 
+        title="Settings" 
+        onPress={() => {setSettingsVisible(true); setMainMenuVisible(false)}}
+        style={styles.menuItem}/>
+    </PaperMenu>
     </View>
   );
 };

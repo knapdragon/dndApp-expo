@@ -1,11 +1,20 @@
 [
     {
-        "id": 1,
+        "id": "1",
         "title": "Gaming Group",
-        "image": "",
         "labels": ["Causal", "Fun"],
         "currentPlayers": 4,
         "maxPlayers": 6,
+        "tagline": "A group of gamers",
         "description": "A group of gamers"
+    },
+    {
+        "id": "2",
+        "title": "Serious Group",
+        "labels": ["Serious"],
+        "currentPlayers": 4,
+        "maxPlayers": 4,
+        "tagline": "We are a dedicated group of serious TTRPG players.",
+        "description": "Join us at [link]!"
     }
 ]
