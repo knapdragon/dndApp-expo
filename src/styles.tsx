@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
-const styles = {
+const styles = StyleSheet.create({
   // General purpose
   container: {
     flex: 1,
@@ -14,8 +14,8 @@ const styles = {
   title: {
     marginTop: 28,
     marginLeft: 15,
-    textAlign: 'left' as 'left',
-    fontSize: 32,
+    textAlign: 'left',
+    fontSize: 24,
     color: "#000",
   },
 
@@ -32,9 +32,9 @@ const styles = {
   },
 
   menuItem: {
-    textAlign: 'center' as 'center', 
-    alignItems: 'center' as 'center',
-    justifyContent: 'center' as 'center',
+    textAlign: 'center', 
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   mainMenu: {
@@ -43,57 +43,62 @@ const styles = {
   },
 
   dialog: {
-    justifyContent: 'center' as 'center',
+    justifyContent: 'center',
   },
 
   newMenu: {
     left: 230,
   },
 
+  // Home
+  HomeGrid: {
+    flex: 1,
+    flexDirection: 'column', 
+    alignItems: 'center',
+  },
+
+  GridItem: {
+    backgroundColor: '#ccc',
+    padding: 10,
+    margin: 30,
+    flex: 1,
+    justifyContent: 'center',
+  },
+
+  // Sheets
   listItem: {
     padding: 15,
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
   },
 
-  // Home
-  HomeGrid: {
-    marginTop: 50,
-    flex: 1, 
-    flexDirection: 'column', 
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
-
-  GridItem: {
-    backgroundColor: 'lightgrey',
-    flex: 1,
-  },
-
-  // Sheets
-
   // Notes
   card: {
     backgroundColor: '#eee',
     borderColor: '#aaa',
     borderWidth: 1,
+    borderRadius: 0,
   },
 
   // Groups
   modalText: {
       flex: 0,
-      justifyContent: 'flex-start' as 'flex-start',
-      alignItems: 'center' as 'center',
-      alignText: 'center' as 'center',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      textAlign: 'center',
     },
 
   // DiceRoller.tsx
   item: {
     flex: 1,
-    maxWidth: {},
     alignItems: 'center'
-  }
+  },
 
-};
+  button: {
+    padding: 10,
+    borderRadius: 10,
+  },
+
+});
 
 export default styles;

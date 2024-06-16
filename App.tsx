@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { SafeAreaView, useColorScheme } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { NavigationContainer } from '@react-navigation/native';
+import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation'
 
 // Styling
-import { PaperProvider, useTheme, MD3LightTheme as DefaultTheme, MD3DarkTheme, Appbar } from 'react-native-paper';
-import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation'
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { PaperProvider } from 'react-native-paper';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import styles from './src/styles.tsx';
 
@@ -15,19 +14,15 @@ import Home from './src/components/Home.tsx';
 import Sheets from './src/components/Sheets/SheetsMain.tsx';
 import Notes from './src/components/Notes/NotesMain.tsx';
 import Groups from './src/components/Groups/GroupsMain.tsx';
-import Settings from './src/components/Settings.tsx';
+import DiceRoller from './src/components/DiceRoller/DiceRoller.tsx';
 
 const Tab = createMaterialBottomTabNavigator();
 
 export default function App() {
 
-  const colorScheme = useColorScheme();
-  const appTheme = colorScheme === 'dark'
-    ? {...MD3DarkTheme}
-    : {...DefaultTheme};
 
   return (
-    <PaperProvider theme={appTheme}>
+    <PaperProvider>
       <NavigationContainer>
         <SafeAreaView style={styles.container}>
             <StatusBar style="auto" />
@@ -64,8 +59,14 @@ export default function App() {
                 options={{
                   tabBarColor: '#bbf',
                   tabBarIcon: ({}) => (<Icon name="account-group" color={'blue'} size={30}/>)}}/>
+              
+              <Tab.Screen
+                name="Dice"
+                component={DiceRoller}
+                options={{
+                  tabBarColor: '#fbf',
+                  tabBarIcon: ({}) => (<Icon name="dice-d20" color={'purple'} size={30}/>)}}/>
             </Tab.Navigator>
-
         </SafeAreaView>
       </NavigationContainer>
     </PaperProvider>

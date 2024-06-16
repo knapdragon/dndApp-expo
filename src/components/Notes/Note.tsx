@@ -4,9 +4,10 @@ import { Appbar } from 'react-native-paper';
 
 interface Props {
   navigation: any,
+  noteId: number,
 }
 
-const Note: React.FC<Props> = ({ navigation }) => {
+const Note: React.FC<Props> = ({ navigation, noteId }) => {
   const [noteTitle,  setNoteTitle] = useState("");
   
     return (

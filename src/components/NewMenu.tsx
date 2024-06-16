@@ -15,18 +15,7 @@ const NewMenu: React.FC<Props> = (
       setNewMenuVisible, newItem }) => {
     
     const actionColor = tabOrigin === 'Groups' ? '#fff' : '#000';
-    const [newItemTitle, setNewItemTitle] = useState('');
-    switch (tabOrigin) {
-        case 'Sheets':
-            () => setNewItemTitle('Sheet');
-            break;
-        case 'Notes':
-            () => setNewItemTitle('Note');
-            break;
-        case 'Groups':
-            () => setNewItemTitle('Group');
-            break;
-    }
+    let newItemTitle = tabOrigin.slice(0, -1);
   return (
     <View>
       <PaperMenu
@@ -40,7 +29,7 @@ const NewMenu: React.FC<Props> = (
           />
         }>
         <PaperMenu.Item 
-          title={'Group'}
+          title={newItemTitle}
           onPress={() => newItem}
           style={styles.menuItem}/>
       </PaperMenu>

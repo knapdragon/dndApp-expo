@@ -1,11 +1,15 @@
 import React, {useState} from 'react';
 import { Text, FlatList, Pressable, TouchableNativeFeedback } from 'react-native';
-import sheetsData from '../../userdata/sheetsData.json';
 import { Menu as PaperMenu, Button, Dialog } from 'react-native-paper';
+
+// styling
 import styles from '../../styles';
 
+// data
+import sheetsData from '../../userdata/sheetsData.json';
+
 interface Props {
-    navigation: any
+  navigation: any
 }
 
 const SheetList: React.FC<Props> = ({ navigation }) => {
@@ -32,7 +36,7 @@ const SheetList: React.FC<Props> = ({ navigation }) => {
    * Obtains coordinates of touch events for anchoring context menus.
    * @param event The touch event
    */
-  const handleCoords = (event: any) => {
+  function handleCoords(event: any): void {
     const [touchEventCoords, setTouchEventCoords] = useState(Array<Number>);
     const coords = [
       event.nativeEvent.locationX, 
@@ -65,7 +69,7 @@ const SheetList: React.FC<Props> = ({ navigation }) => {
   );
 
   const [selectedId, setSelectedId] = useState<string>();
-  const handleItemSelect = (item: ItemData) => {
+  function handleItemSelect(item: ItemData): void {
     setSelectedId(item.id.toString())
     var characterSheetData = sheetsData[Number(selectedId)];
     navigation.navigate("CharacterSheet", characterSheetData)
@@ -77,7 +81,7 @@ const SheetList: React.FC<Props> = ({ navigation }) => {
    * @returns <Item>
    */
   const renderItem = ({item}: {item: ItemData}) => {
-    const backgroundColor = item.id.toString() === selectedId ? '#1F89BD' : '#8AD9FF';
+    const backgroundColor = item.id.toString() === selectedId ? '#777' : '#eee';
     const color = item.id.toString() === selectedId ? 'white' : 'black';
 
     return (
@@ -100,7 +104,7 @@ const SheetList: React.FC<Props> = ({ navigation }) => {
    * @param item A given item in the FlatList array
    * @returns void
    */
-  const handleItemContextMenu = (item: ItemData) => {
+  function handleItemContextMenu(item: ItemData) {
     setSelectedId(item.id.toString())
     return (
       <PaperMenu
@@ -117,9 +121,9 @@ const SheetList: React.FC<Props> = ({ navigation }) => {
    * @param item A given item from FlatList array
    * @returns A confirmation dialog to actually delete the sheet data
    */
-  const deleteSheetDialog = (item: ItemData) => {
+  function deleteSheetDialog(item: ItemData) {
     const [delDialogVisible, setDelDialogVisible] = useState(false);
-    const deleteSheet = (item: ItemData) => {
+    function deleteSheet(item: ItemData) {
       sheetsData.splice(item.id);
       setDelDialogVisible(false);
     }
@@ -143,11 +147,12 @@ const SheetList: React.FC<Props> = ({ navigation }) => {
   }
   
     return (
-        <FlatList 
-            data={sheetsData}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id.toString()}
-            extraData={selectedId}/>
+      <FlatList 
+        data={sheetsData}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+        extraData={selectedId}
+        style={{backgroundColor: '#fff'}}/>
     )
 }
 

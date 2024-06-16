@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { Appbar, Card, PaperProvider, Portal } from 'react-native-paper';
+import { Appbar, Card, Button, PaperProvider, Portal } from 'react-native-paper';
 
 // styling
 import styles from '../../styles.tsx';
@@ -30,26 +30,26 @@ const Notes: React.FC<Props> = ({ navigation }) => {
   type ItemProps = {
     item: ItemData;
     onPress: () => void;
+    backgroundColor: string;
+    textColor: string;
   };
 
-  const Item = ({item}: ItemProps) => (
-    <View style={[styles.container, {justifyContent: 'space-around'}]}>
-      <Card mode='contained' style={styles.card}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Note', selectedId)}>
-          <Card.Title title={item.title}
-            titleStyle={[styles.title, {fontSize: 18}, {marginTop: 20}, {marginLeft: 0}, {alignItems: 'flex-start'}]}
-            style={[{borderBottomColor: 'silver'}, {borderBottomWidth: 1}]}/>
+  const Item = ({item, textColor}: ItemProps) => (
+    <Card mode='contained' style={styles.card}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Note', selectedId)}>
+        <Card.Title title={item.title}
+          titleStyle={[styles.title, {fontSize: 18}, {marginTop: 20}, {marginLeft: 0}, {alignItems: 'flex-start'}]}
+          style={[{borderBottomColor: 'silver'}, {borderBottomWidth: 1}]}/>
 
-          <Card.Content style={[{marginTop: 10}, {marginBottom: (item.content.length / 10 + 20)}]}>
-            <Text>
-              {item.content.length > 64 ? 
-              item.content.slice(0, 64) + '...' : item.content}
-            </Text>
-          </Card.Content>
-        </TouchableOpacity>
-      </Card>
-    </View>
+        <Card.Content style={[{marginTop: 10}, {marginBottom: (item.content.length / 10 + 20)}]}>
+          <Text>
+            {item.content.length > 64 ? 
+            item.content.slice(0, 64) + '...' : item.content}
+          </Text>
+        </Card.Content>
+      </TouchableOpacity>
+    </Card>
   );
 
   {/* Appbar and related actions */}
@@ -64,11 +64,21 @@ const Notes: React.FC<Props> = ({ navigation }) => {
   const [selectedId, setSelectedId] = useState<string>();
   function handleItemSelect(item: ItemData) {
     setSelectedId(item.id.toString())
-    navigation.navigate("Note", {noteId: selectedId})
+    navigation.navigate("Note")
   }
 
   const renderItem = ({item}: {item: ItemData}) => {
-    return (  <Item item={item} onPress={() => handleItemSelect(item)}/>  );
+    const backgroundColor = item.id.toString() === selectedId ? '#6e3b6e' : '#f9c2ff';
+    const color = item.id.toString() === selectedId ? 'white' : 'black';
+
+    return (
+      <Item
+        item={item}
+        onPress={() => handleItemSelect(item)}
+        backgroundColor={backgroundColor}
+        textColor={color}
+      />
+    );
   };
   
   /**
@@ -110,7 +120,27 @@ const Notes: React.FC<Props> = ({ navigation }) => {
         numColumns={2}
         keyExtractor={(item) => item.id.toString()}
         extraData={selectedId}
-        renderItem={renderItem}/>
+        renderItem={(item) => {
+          return (
+            <View style={[styles.container, {justifyContent: 'space-around'}]}>
+              <Card mode='contained' style={styles.card}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Note', selectedId)}>
+                  <Card.Title title={item.item.title}
+                    titleStyle={[styles.title, {fontSize: 18}, {marginTop: 20}, {marginLeft: 0}, {alignItems: 'flex-start'}]}
+                    style={[{borderBottomColor: 'silver'}, {borderBottomWidth: 1}]}/>
+
+                  <Card.Content style={[{marginTop: 10}, {marginBottom: (item.item.content.length / 10 + 20)}]}>
+                    <Text>
+                      {item.item.content.length > 64 ? 
+                      item.item.content.slice(0, 64) + '...' : item.item.content}
+                    </Text>
+                  </Card.Content>
+                </TouchableOpacity>
+              </Card>
+            </View>
+          )
+        }}/>
 
       <PaperProvider>
         <Portal>

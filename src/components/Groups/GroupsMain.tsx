@@ -16,6 +16,8 @@ interface Props {
   navigation: any,
 }
 
+const tabOrigin = 'Groups';
+
 const Groups: React.FC<Props> = ({ navigation }) => {
   type ItemData = {
     id: string,
@@ -32,7 +34,6 @@ const Groups: React.FC<Props> = ({ navigation }) => {
     onPress: () => void;
     backgroundColor: string;
     textColor: string;
-    setModalContents: () => void;
   };
 
   const Item = ({item, onPress, backgroundColor, textColor}: ItemProps) => (
@@ -49,29 +50,36 @@ const Groups: React.FC<Props> = ({ navigation }) => {
       </TouchableOpacity>
   );
 
-  // State variables
-  const [tabOrigin, setTabOrigin] = useState('Groups');
-
+  {/* Appbar and related actions */}
   const [mainMenuVisible, setMainMenuVisible] = useState(false);
   const [settingsVisible, setSettingsVisible] = useState(false);
-
+  function closeSettingsDialog(): void {
+    setSettingsVisible(false);
+  }
   const [newMenuVisible, setNewMenuVisible] = useState(false);
 
   const [groupModalVisible, setGroupModalVisible] = useState(false);
   const [modalInfo, setModalInfo] = useState<Array<any>>()
 
   const [selectedId, setSelectedId] = useState<string>("1");
-  const handleItemSelect = (item: ItemData) => {
-    setSelectedId(item.id.toString());
+  function handleItemSelect(item: ItemData) {
+    setSelectedId(item.id);
     setGroupModalVisible(true);
-  }
 
-  const closeSettingsDialog = () => {
-    setSettingsVisible(false);
+    const groupData = groupsData.find(item => item.id == selectedId);
+    const allGroupData = [
+      groupData?.id, 
+      groupData?.title, 
+      groupData?.labels, 
+      groupData?.maxPlayers, 
+      groupData?.currentPlayers, 
+      groupData?.tagline, 
+      groupData?.description];
+    setModalInfo(allGroupData);
   }
 
   const renderItem = ({item}: {item: ItemData}) => {
-    const backgroundColor = item.id.toString() === selectedId ? '#6e3b6e' : '#f9c2ff';
+    const backgroundColor = item.id.toString() === selectedId ? '#777' : '#eee';
     const color = item.id.toString() === selectedId ? 'white' : 'black';
 
     return (
@@ -80,19 +88,11 @@ const Groups: React.FC<Props> = ({ navigation }) => {
         onPress={() => handleItemSelect(item)}
         backgroundColor={backgroundColor}
         textColor={color}
-        setModalContents={() => setModalInfo([
-          item.title,
-          item.labels,
-          item.maxPlayers,
-          item.currentPlayers,
-          item.tagline,
-          item.description,
-        ])}
       />
     );
   };
 
-  const createGroup = () => {
+  function createGroup() {
     const existingGroups = groupsData.length;
     const availableId = existingGroups + 1;
 
@@ -133,7 +133,7 @@ const Groups: React.FC<Props> = ({ navigation }) => {
             onDismiss={() => setGroupModalVisible(false)}
             contentContainerStyle={styles.container}>
               <View>
-                <Text></Text>
+                <Text>{modalInfo}</Text>
                 <TouchableOpacity
                   style={styles.modalText} 
                   onPress={() => setGroupModalVisible(false)}>

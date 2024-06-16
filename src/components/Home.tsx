@@ -11,11 +11,12 @@ interface Props {
 
 const Home: React.FC<Props> = ({ navigation }) => {
   const [tabOrigin, setTabOrigin] = useState('Home');
-  const closeSettingsDialog = () => {
-    setSettingsVisible(false);
-  }
+
   // State variables for the main menu
   const [mainMenuVisible, setMainMenuVisible] = useState(false);
+  function closeSettingsDialog(): void {
+    setSettingsVisible(false);
+  }
   const [settingsVisible, setSettingsVisible] = useState(false);
 
   return (
@@ -25,22 +26,10 @@ const Home: React.FC<Props> = ({ navigation }) => {
               <MainMenu 
                 tabOrigin={tabOrigin}
                 enabled={mainMenuVisible}
-                setSettingsVisible={() => setSettingsVisible}
-                setMainMenuVisible={() => setMainMenuVisible}
+                setSettingsVisible={setSettingsVisible}
+                setMainMenuVisible={setMainMenuVisible}
                 />
         </Appbar.Header>
-
-        <View style={styles.HomeGrid}>
-          <View style={styles.GridItem}>
-            <Text>Visit Sheets to get started</Text>
-          </View>
-          <View style={styles.GridItem}>
-            <Text>Visit Notes to jot something down</Text>
-          </View>
-          <View style={styles.GridItem}>
-            <Text>Visit Groups to find other players</Text>
-          </View>
-        </View>
 
         <PaperProvider>
           <Portal>
