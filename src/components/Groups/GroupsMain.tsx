@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 
 // styling
 import styles from '../../../src/styles.tsx';
-import { Appbar, Menu as PaperMenu, Portal, Modal, PaperProvider } from 'react-native-paper';
+import { Appbar, Portal, Modal, PaperProvider } from 'react-native-paper';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
 // data
 import groupsData from '../../../src/userdata/groupsData.json';
+import NewGroupForm from './NewGroupForm.tsx';
 import Settings from '../Settings.tsx';
 import MainMenu from '../MainMenu.tsx';
 import NewMenu from '../NewMenu.tsx';
@@ -57,31 +58,38 @@ const Groups: React.FC<Props> = ({ navigation }) => {
     setSettingsVisible(false);
   }
   const [newMenuVisible, setNewMenuVisible] = useState(false);
+  const [newGroupFormVisible, setNewGroupFormVisible] = useState(false);
+  function openNewGroupForm(): void {
+    setNewGroupFormVisible(true);
+  }
+  function closeNewGroupForm(): void {
+    setNewGroupFormVisible(false);
+  }
 
+  // Groups-specific states
   const [groupModalVisible, setGroupModalVisible] = useState(false);
-  const [modalInfo, setModalInfo] = useState<Array<any>>()
+  const [modalData, setModalData] = useState<Array<any>>([]);
 
-  const [selectedId, setSelectedId] = useState<string>("1");
-  function handleItemSelect(item: ItemData) {
+  const [selectedId, setSelectedId] = useState<string | undefined>("");
+  const handleItemSelect = useCallback((item: ItemData) => {
     setSelectedId(item.id);
     setGroupModalVisible(true);
 
     const groupData = groupsData.find(item => item.id == selectedId);
     const allGroupData = [
-      groupData?.id, 
-      groupData?.title, 
-      groupData?.labels, 
-      groupData?.maxPlayers, 
-      groupData?.currentPlayers, 
-      groupData?.tagline, 
-      groupData?.description];
-    setModalInfo(allGroupData);
-  }
+      groupData?.title,
+      groupData?.labels,
+      groupData?.currentPlayers,
+      groupData?.maxPlayers,
+      groupData?.tagline,
+      groupData?.description
+    ];
+    setModalData(allGroupData);
+  }, [Item, groupsData, selectedId]);
 
   const renderItem = ({item}: {item: ItemData}) => {
     const backgroundColor = item.id.toString() === selectedId ? '#777' : '#eee';
     const color = item.id.toString() === selectedId ? 'white' : 'black';
-
     return (
       <Item
         item={item}
@@ -91,27 +99,17 @@ const Groups: React.FC<Props> = ({ navigation }) => {
       />
     );
   };
-
-  function createGroup() {
-    const existingGroups = groupsData.length;
-    const availableId = existingGroups + 1;
-
-    const newGroupId = availableId;
-    const newGroup = groupsData[newGroupId];
-
-    newGroup.id = newGroupId.toString();
-    // alert(groupsData[availableId])
-  }
   
   return (
     <View style={styles.container}>
-      <Appbar.Header style={{backgroundColor: '#55a'}}>
-        <Appbar.Content title="Groups" titleStyle={{color: '#fff'}}/>
+      <Appbar.Header style={{backgroundColor: '#6496e8'}}>
+        <Appbar.Content title="Groups"/>
             <NewMenu 
               tabOrigin={tabOrigin}
               enabled={newMenuVisible}
               setNewMenuVisible={setNewMenuVisible}
-              newItem={createGroup}/>
+              newItem={openNewGroupForm}
+              />
             <MainMenu 
               tabOrigin={tabOrigin}
               enabled={mainMenuVisible}
@@ -126,16 +124,42 @@ const Groups: React.FC<Props> = ({ navigation }) => {
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
           extraData={selectedId}/>
-         
+
+        <NewGroupForm 
+          enabled={newGroupFormVisible}
+          closeForm={closeNewGroupForm}
+          data={groupsData}/>
+
         <Portal>
           <Modal
             visible={groupModalVisible} 
             onDismiss={() => setGroupModalVisible(false)}
-            contentContainerStyle={styles.container}>
+            contentContainerStyle={[styles.container, {backgroundColor: '#eee'}]}>
               <View>
-                <Text>{modalInfo}</Text>
+                <View style={styles.modalTitle}>
+                  <Text id='modal-title' 
+                    style={styles.title}>{modalData[0]}</Text>
+                </View>
+
+                <View style={styles.modalPlayers}>
+                  <Text id='modal-currentplayers' 
+                    style={[styles.modalText, {fontSize: 18}]}>
+                      Players: {modalData[2]}/{modalData[3]}
+                  </Text>
+                </View>
+
+                <View style={styles.modalLabels}>
+                  <Text id='modal-labels' 
+                    style={styles.modalText}>{modalData[1]}</Text>
+                </View>
+                
+                <View style={styles.modalDescription}>
+                  <Text id='modal-description' 
+                    style={styles.modalText}>{modalData[5]}</Text>
+                </View>
+                
                 <TouchableOpacity
-                  style={styles.modalText} 
+                  style={styles.modalButton} 
                   onPress={() => setGroupModalVisible(false)}>
                   <Text>Close</Text>
                 </TouchableOpacity>
@@ -144,12 +168,11 @@ const Groups: React.FC<Props> = ({ navigation }) => {
         </Portal>
       </PaperProvider>
       
-      <PaperProvider>
-        <Portal>
+      <View style={{flex: 0}}>
+        {settingsVisible ? 
           <Settings tabOrigin={tabOrigin} enabled={settingsVisible} closeDialog={closeSettingsDialog}/>
-        </Portal>
-      </PaperProvider>
-
+        : null}
+      </View>
     </View>
   );
 };

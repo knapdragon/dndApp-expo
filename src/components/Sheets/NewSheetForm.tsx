@@ -30,7 +30,7 @@ const NewSheetForm: React.FC<Props> = ({ navigation }) => {
       <View id="form">
         {/* User chooses a name */}
         <Text style={styles.text}>Character Name</Text>
-        <TextInput onBlur={(text) => this.setName(text)}
+        <TextInput onBlur={(text?) => setName(text)}
         />  
 
         {/* User selects a race */}
@@ -43,7 +43,7 @@ const NewSheetForm: React.FC<Props> = ({ navigation }) => {
         {/* Display race, description, & basic stats */}
         <Text style={styles.text}>{race}</Text>
         <View>
-          <Text>{racesSRD[racesSRD.indexOf(racesSRD.find((r) => r.name === race))]}</Text>
+          <Text>{racesSRD?[racesSRD.indexOf(racesSRD.find((r) => r.name === race))]}</Text>
         </View>
 
         {/* User selects a class */}

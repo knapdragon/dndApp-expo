@@ -14,13 +14,19 @@ const NewMenu: React.FC<Props> = (
     { tabOrigin, enabled,
       setNewMenuVisible, newItem }) => {
     
-    const actionColor = tabOrigin === 'Groups' ? '#fff' : '#000';
-    let newItemTitle = tabOrigin.slice(0, -1);
+    const actionColor = '#000';
+    let newItemTitle = '';
+    if (tabOrigin === 'DiceRoller') {
+      newItemTitle = 'Custom Dice';
+    } else {
+      newItemTitle = tabOrigin.slice(0, -1);
+    }
   return (
     <View>
       <PaperMenu
         visible={enabled}
         onDismiss={() => setNewMenuVisible(false)}
+        statusBarHeight={90}
         anchor={
         <Appbar.Action 
           color={actionColor}
@@ -30,7 +36,7 @@ const NewMenu: React.FC<Props> = (
         }>
         <PaperMenu.Item 
           title={newItemTitle}
-          onPress={() => newItem}
+          onPress={newItem}
           style={styles.menuItem}/>
       </PaperMenu>
     </View>

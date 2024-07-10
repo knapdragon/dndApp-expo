@@ -1,28 +1,25 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, FlatList, Image, Pressable, TouchableNativeFeedback } from 'react-native';
+import { View, Text } from 'react-native';
 
 // Styling
 import styles from '../../styles.tsx';
-import { Appbar, Menu as PaperMenu, Button, Dialog, PaperProvider, Portal } from 'react-native-paper';
+import { Appbar } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Data
 import Settings from '../Settings.tsx';
-import sheetsData from '../../userdata/sheetsData.json';
-import SheetList from './SheetList.tsx';
-import CharacterSheet from './CharacterSheet.tsx';
 import MainMenu from '../MainMenu.tsx';
 import NewMenu from '../NewMenu.tsx';
+import SheetList from './SheetList.tsx';
 
 const Stack = createNativeStackNavigator();  
+const tabOrigin = 'Sheets';
 
 // Navigation
 interface Props {
   navigation: any,
 }
-
-const tabOrigin = 'Sheets';
 
 const Sheets: React.FC<Props> = ({ navigation }) => {
   {/* Appbar and related actions */}
@@ -58,24 +55,16 @@ const Sheets: React.FC<Props> = ({ navigation }) => {
       </View>
       
       <View style={styles.container}>
-        <Stack.Navigator
-          screenOptions={{headerShown: false}}>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="Sheet" component={SheetList}/>
-          {/*
-          <FlatList 
-            data={sheetsData}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id.toString()}
-            extraData={selectedId}/>
-            */}
         </Stack.Navigator>
       </View>
 
-      <PaperProvider>
-        <Portal>
+      <View style={{flex: 0}}>
+        {settingsVisible ? 
           <Settings tabOrigin={tabOrigin} enabled={settingsVisible} closeDialog={closeSettingsDialog}/>
-        </Portal>
-      </PaperProvider>
+        : null}
+      </View>
     </View>
   );
 };

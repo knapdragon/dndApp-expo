@@ -1,19 +1,91 @@
-import React, {useState} from 'react';
-import { Text, FlatList, Pressable, TouchableNativeFeedback } from 'react-native';
-import { Menu as PaperMenu, Button, Dialog } from 'react-native-paper';
+import React, {useCallback, useState} from 'react';
+import { Text, FlatList, Pressable, TouchableNativeFeedback, View, ScrollView, TouchableOpacity } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 // styling
 import styles from '../../styles';
+import { Menu as PaperMenu, Button, Dialog } from 'react-native-paper';
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
 // data
 import sheetsData from '../../userdata/sheetsData.json';
+
+export const Character: React.FC<Props> = ({navigation}) => {
+  
+  return (
+    <View style={styles.container}>
+      <Text>Hello</Text>
+    </View>
+  )
+}
+
+export const Actions: React.FC<Props> = ({navigation}) => {
+  
+  return (
+    <View style={styles.container}>
+      
+    </View>
+  )
+}
+
+export const Inventory: React.FC<Props> = ({navigation}) => {
+  
+  return (
+    <View style={styles.container}>
+      
+    </View>
+  )
+}
+
+const Tab = createMaterialTopTabNavigator();
+export const SheetNavigation: React.FC<Props> = ({}) => {
+  return (
+    <NavigationContainer independent={true}>
+      <Tab.Navigator
+        style={{padding: -30, borderBottomWidth: 1, borderBottomColor: 'silver'}}
+        initialRouteName='Character' 
+        backBehavior={'history'}>
+        <Tab.Screen 
+          name="Character" 
+          component={Character} 
+          options={{
+            lazy: true,
+            tabBarPressColor: '#ccf',
+            tabBarIcon: ({}) => (<Icon name="account" color={'blue'} size={20}/>)}}/>
+
+        <Tab.Screen 
+          name="Actions" 
+          component={Actions}
+          options={{
+            lazy: true,
+            tabBarPressColor: '#fcc',
+            tabBarIndicatorStyle: {backgroundColor: '#f00'},
+            tabBarIcon: ({}) => (<Icon name="sword-cross" color={'red'} size={20}/>)}}/>
+
+        <Tab.Screen 
+          name="Inventory" 
+          component={Inventory}
+          options={{
+            lazy: true,
+            tabBarPressColor: '#cfc',
+            tabBarIndicatorStyle: {backgroundColor: '#090'},
+            tabBarIcon: ({}) => (<Icon name="sack" color={'green'} size={20}/>)}}/>
+      </Tab.Navigator>
+    </NavigationContainer>
+  )
+}
 
 interface Props {
   navigation: any
 }
 
 const SheetList: React.FC<Props> = ({ navigation }) => {
-// Rendering FlatList items
+  const [sheetDialogVisible, setSheetDialogVisible] = useState(false);
+  const [sheetDialogTab, setSheetDialogTab] = useState<string | number>(1)
+  const [charSheet, setCharSheet] = useState<any>([]);
+
+  // Rendering FlatList items
   type ItemData = {
     id: number;
     image: string;
@@ -56,7 +128,7 @@ const SheetList: React.FC<Props> = ({ navigation }) => {
    */
   const Item = ({item, onPress, onLongPress, backgroundColor, textColor}: ItemProps) => (
     <TouchableNativeFeedback onPress={(event) => handleCoords(event)}>
-      <Pressable onPress={onPress} onLongPress={onLongPress}
+      <TouchableOpacity onPress={onPress} onLongPress={onLongPress}
         style={[styles.listItem, {backgroundColor}]}>
         <Text style={[styles.text, {color: textColor}]}>
           {item.name}
@@ -64,16 +136,18 @@ const SheetList: React.FC<Props> = ({ navigation }) => {
         <Text style={[styles.text, {color: textColor}, {fontSize: 14}]}>
           Level {item.charLvl} {item.race} {item.mainClass}{item.multiClass}
         </Text>
-      </Pressable>
+      </TouchableOpacity>
     </TouchableNativeFeedback>
   );
 
   const [selectedId, setSelectedId] = useState<string>();
-  function handleItemSelect(item: ItemData): void {
+  const handleItemSelect = useCallback((item: ItemData) => {
     setSelectedId(item.id.toString())
-    var characterSheetData = sheetsData[Number(selectedId)];
-    navigation.navigate("CharacterSheet", characterSheetData)
-  }
+    var characterSheetData = sheetsData[Number(selectedId) - 1];
+    setCharSheet(characterSheetData);
+
+    setSheetDialogVisible(true);
+  }, [Item]);
 
   /**
    * Renders FlatList elements as an Item using ItemData props
@@ -106,9 +180,10 @@ const SheetList: React.FC<Props> = ({ navigation }) => {
    */
   function handleItemContextMenu(item: ItemData) {
     setSelectedId(item.id.toString())
+    setItemMenuVisible(true);
     return (
       <PaperMenu
-        visible={itemMenuVisible}
+        visible={true}
         onDismiss={() => setItemMenuVisible(false)}
         anchor={selectedId}>
         <PaperMenu.Item title="Delete" onPress={() => deleteSheetDialog}/>
@@ -147,12 +222,36 @@ const SheetList: React.FC<Props> = ({ navigation }) => {
   }
   
     return (
-      <FlatList 
-        data={sheetsData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-        extraData={selectedId}
-        style={{backgroundColor: '#fff'}}/>
+      <>
+        <FlatList 
+          data={sheetsData}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          extraData={selectedId}
+          style={{backgroundColor: '#fff'}}/>
+
+        <Dialog visible={sheetDialogVisible} style={{backgroundColor: '#fff'}}>
+          <Dialog.Title>{charSheet?.name}</Dialog.Title>
+          <Text style={{marginHorizontal: 25, marginTop: -15}}>
+            Level {charSheet?.charLvl} {charSheet?.race} {charSheet?.mainClass}{charSheet?.multiClass}
+          </Text>
+          <View style={{marginTop: 20, borderBottomWidth: 1, borderBottomColor: 'gray'}} />
+
+          <Dialog.Content>
+            <Dialog.ScrollArea style={{height: '80%'}}>
+              <ScrollView style={{marginHorizontal: -48, marginBottom: -40}}>
+                <SheetNavigation navigation={navigation}/>
+              </ScrollView>
+            </Dialog.ScrollArea>
+          </Dialog.Content>
+
+          <View style={{flexDirection: 'row', alignItems: 'center', borderTopWidth: 1, borderTopColor: 'gray', marginTop: '-10%'}}>
+            <Dialog.Actions>
+              <Button onPress={() => setSheetDialogVisible(false)}>Close</Button>
+            </Dialog.Actions>
+          </View>
+        </Dialog>
+      </>
     )
 }
 

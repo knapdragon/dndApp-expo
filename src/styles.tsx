@@ -1,6 +1,7 @@
 import { Dimensions, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+
   // General purpose
   container: {
     flex: 1,
@@ -17,6 +18,11 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: 24,
     color: "#000",
+  },
+
+  titleAlt: {
+    fontSize: 24,
+    textAlign: 'center',
   },
 
   text: {
@@ -51,18 +57,24 @@ const styles = StyleSheet.create({
   },
 
   // Home
-  HomeGrid: {
-    flex: 1,
-    flexDirection: 'column', 
-    alignItems: 'center',
+  diceColumn: {
+    position: 'absolute',
+    right: 50,
+    bottom: 30,
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'flex-end',
+    flexDirection: 'column',
   },
 
-  GridItem: {
-    backgroundColor: '#ccc',
-    padding: 10,
-    margin: 30,
-    flex: 1,
-    justifyContent: 'center',
+  diceColumn2: {
+    position: 'absolute',
+    right: 10,
+    bottom: 30,
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'flex-end',
+    flexDirection: 'column',
   },
 
   // Sheets
@@ -80,6 +92,12 @@ const styles = StyleSheet.create({
     borderRadius: 0,
   },
 
+  dialogButton: {
+    flexDirection: 'row',
+    borderRadius: 20,
+    padding: 10,
+  },
+
   // Groups
   modalText: {
       flex: 0,
@@ -87,11 +105,117 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       textAlign: 'center',
     },
+  
+  modalTitle: {
+    bottom: 90,
+  },
+
+  modalLabels: {
+    left: 15, 
+    bottom: 110,
+    alignItems: 'flex-start',
+  },
+
+  modalPlayers: {
+    right: 30,
+    bottom: 115,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+
+  modalDescription: {
+    left: 20,
+    bottom: 65,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+  },
+
+  modalButton: {
+    top: 50,
+    alignSelf: 'center',
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor:'#6496e8',
+    width: '13%',
+  },
+
+  // NewGroupForm
+  newGroupContainer: {
+    flex: 1,
+    marginTop: -50, 
+    backgroundColor: '#eee', 
+    borderTopWidth: 2, 
+    borderTopColor: '#555',
+  },
+
+  formInputs: {
+    width: 350,
+    height: 40,
+    top: 5,
+    textAlignVertical: 'center',
+  },
+
+  newGroupTitle: {
+    position: 'absolute',
+    top: -120,
+    left: 30,
+  },
+
+  newGroupLabels: {
+    top: -40,
+    left: 30,
+  },
+
+  newGroupPlayers: {
+    top: -20,
+    left: 30,
+  },
+
+  newGroupTagline: {
+    top: 5,
+    left: 30,
+  },
+
+  newGroupDescription: {
+    top: 25,
+    left: 30,
+  },
+
+  newGroupAuthor: {
+    top: 45,
+    left: 30,
+  },
+
+  newGroupButton: {
+    bottom: -100,
+    alignSelf: 'center',
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor:'#6496e8',
+    width: '13%',
+  },
 
   // DiceRoller.tsx
-  item: {
-    flex: 1,
-    alignItems: 'center'
+  diceDisplay: {
+    position: 'absolute',
+    top: 10,
+    left: '30%',
+    flex: 0.5, 
+    justifyContent: 'space-evenly', 
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+
+  diceSelect: {
+    position: 'absolute',
+    top: 10,
+    right: '30%',
+    flex: 0.5, 
+    justifyContent: 'space-evenly', 
+    alignItems: 'center',
+    flexDirection: 'column',
   },
 
   button: {

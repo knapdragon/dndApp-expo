@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { Appbar, Card, PaperProvider, Portal } from 'react-native-paper';
+import { View, Text, FlatList, TouchableOpacity, Modal as RNModal } from 'react-native';
+import { Appbar, Card, PaperProvider, Portal, Modal, Dialog, Button } from 'react-native-paper';
 
 // styling
 import styles from '../../styles.tsx';
 
 // data
+import Note from './Note.tsx';
 import notesData from '../../userdata/notesData.json';
 import Settings from '../Settings.tsx';
 import MainMenu from '../MainMenu.tsx';
@@ -33,18 +34,18 @@ const Notes: React.FC<Props> = ({ navigation }) => {
   };
 
   const Item = ({item}: ItemProps) => (
-    <View style={[styles.container, {justifyContent: 'space-around'}]}>
+    <View style={[styles.container, {justifyContent: 'space-between'}]}>
       <Card mode='contained' style={styles.card}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Note', selectedId)}>
+          onPress={() => handleItemSelect(item)}>
           <Card.Title title={item.title}
             titleStyle={[styles.title, {fontSize: 18}, {marginTop: 20}, {marginLeft: 0}, {alignItems: 'flex-start'}]}
             style={[{borderBottomColor: 'silver'}, {borderBottomWidth: 1}]}/>
 
-          <Card.Content style={[{marginTop: 10}, {marginBottom: (item.content.length / 10 + 20)}]}>
+          <Card.Content style={[{marginTop: 10}, {marginBottom: 20}]}>
             <Text>
-              {item.content.length > 64 ? 
-              item.content.slice(0, 64) + '...' : item.content}
+              {item.content.length > 192 ? 
+              item.content.slice(0, 192) + '...' : item.content}
             </Text>
           </Card.Content>
         </TouchableOpacity>
@@ -60,11 +61,22 @@ const Notes: React.FC<Props> = ({ navigation }) => {
   }
   const [newMenuVisible, setNewMenuVisible] = useState(false);
 
+  const [noteVisible, setNoteVisible] = useState(false);
+  const [noteData, setNoteData] = useState<Array<any>>([]);
+
   // Rendering FlatList items
-  const [selectedId, setSelectedId] = useState<string>();
+  const [selectedId, setSelectedId] = useState<string>('1');
   function handleItemSelect(item: ItemData) {
     setSelectedId(item.id.toString())
-    navigation.navigate("Note", {noteId: selectedId})
+    setNoteVisible(true);
+
+    const noteData = notesData.find(item => item.id.toString() == selectedId);
+    const allNoteData = [
+      noteData?.title,
+      noteData?.content,
+      noteData?.colour,
+    ];
+    setNoteData(allNoteData);
   }
 
   const renderItem = ({item}: {item: ItemData}) => {
@@ -76,13 +88,46 @@ const Notes: React.FC<Props> = ({ navigation }) => {
    * */
   function newNote() {
     alert('Button pressed!');
+    const newNoteId = notesData.length + 1;
+    const newNote = {
+      id: newNoteId,
+      title: 'New Note ' + newNoteId,
+      content: '',
+      colour: 'default',
+    };
+
+    notesData.push(newNote);
+  }
+
+  /**
+   * Saves the contents of a note. 
+   * */
+  function saveNote() {
+    alert('Button pressed!');
+    setNoteVisible(false);
   }
 
   /** 
    * Delete a note with the given id. 
    * */
   function deleteNote() {
-    alert('Button pressed!');
+    let dialogVisible = true;
+    return (
+      <Dialog visible={dialogVisible}>
+        <Dialog.Title>Really delete this note?</Dialog.Title>
+        <Dialog.Actions>
+          <TouchableOpacity onPress={() => deleteConfirmed()} style={[styles.dialogButton, {backgroundColor: '#f55'}]}>
+            <Text>Yes, delete</Text>
+          </TouchableOpacity>
+          <Button onPress={() => dialogVisible = false}>Cancel</Button>
+        </Dialog.Actions>
+      </Dialog>
+    )
+  }
+
+  function deleteConfirmed(): void {
+    alert('Note id: ' + selectedId);
+    // notesData.splice(parseInt(selectedId));
   }
 
   // Notes begins
@@ -112,11 +157,17 @@ const Notes: React.FC<Props> = ({ navigation }) => {
         extraData={selectedId}
         renderItem={renderItem}/>
 
-      <PaperProvider>
-        <Portal>
+      {/* Overlays — should not be flexible */}
+      <View style={{flex: 0}}>
+        {noteVisible ? 
+        <Note enabled={noteVisible} data={noteData} saveNote={() => saveNote()} closeNote={() => setNoteVisible(false)} deleteNote={() => deleteNote()} />
+        : null}
+
+        {settingsVisible ? 
           <Settings tabOrigin={tabOrigin} enabled={settingsVisible} closeDialog={closeSettingsDialog}/>
-        </Portal>
-      </PaperProvider>
+        : null}
+      </View>
+
     </View>
   );
 };

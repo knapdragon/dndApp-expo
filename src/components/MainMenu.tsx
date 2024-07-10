@@ -11,13 +11,14 @@ interface Props {
 }
 
 const MainMenu: React.FC<Props> = ({ tabOrigin, enabled, setSettingsVisible, setMainMenuVisible }) => {
-  const actionColor = tabOrigin === 'Groups' ? '#fff' : '#000';
+  const actionColor = '#000';
   return (
     <View>
       {/* Settings menu */}
       <PaperMenu
       visible={enabled}
       onDismiss={() => setMainMenuVisible(false)}
+      statusBarHeight={90}
       anchor={
         <Appbar.Action 
         color={actionColor}
