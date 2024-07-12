@@ -1,5 +1,33 @@
 import { Dimensions, StyleSheet } from 'react-native';
 
+export const Colors = {
+  common: {
+    background: '#fff',
+    backgroundDarkMode: '#555',
+    text: '#000',
+    textDarkMode: '#fff',
+
+    buttonApplyCreate: '#3b3',
+    buttonDelete: '#f55',
+  },
+
+  sheets: {
+    primary: '#f55',
+  },
+
+  notes: {
+    primary: '#4a4',
+  },
+
+  groups: {
+    primary: '#6496e8',
+  },
+
+  diceRoller: {
+    primary: '#ff70ff',
+  },
+}
+
 const styles = StyleSheet.create({
 
   // General purpose

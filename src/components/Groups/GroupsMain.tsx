@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 
 // styling
@@ -28,6 +28,7 @@ const Groups: React.FC<Props> = ({ navigation }) => {
     maxPlayers: number,
     tagline: string,
     description: string,
+    author: string,
     };
 
   type ItemProps = {
@@ -69,6 +70,10 @@ const Groups: React.FC<Props> = ({ navigation }) => {
   // Groups-specific states
   const [groupModalVisible, setGroupModalVisible] = useState(false);
   const [modalData, setModalData] = useState<Array<any>>([]);
+  const [userAuthor, setUserAuthor] = useState<{ name: string | undefined; isAuthor: boolean }>({
+    name: '',         // stores name of user who created group
+    isAuthor: false,  // used to check if user is the author of a selected group
+  }); 
 
   const [selectedId, setSelectedId] = useState<string | undefined>("");
   const handleItemSelect = useCallback((item: ItemData) => {
@@ -82,8 +87,16 @@ const Groups: React.FC<Props> = ({ navigation }) => {
       groupData?.currentPlayers,
       groupData?.maxPlayers,
       groupData?.tagline,
-      groupData?.description
+      groupData?.description,
+      groupData?.author,
     ];
+    if (groupData?.author === userAuthor["name"]) {
+      setUserAuthor({name: groupData?.author, isAuthor: true});
+      // if current user is author of selected group, show delete button
+    } else {
+      setUserAuthor({name: userAuthor["name"], isAuthor: false});
+    }
+    console.log(groupData?.author, userAuthor["name"], userAuthor["isAuthor"]);
     setModalData(allGroupData);
   }, [Item, groupsData, selectedId]);
 
@@ -99,6 +112,15 @@ const Groups: React.FC<Props> = ({ navigation }) => {
       />
     );
   };
+
+  function deleteGroup(): void {
+    if (selectedId != undefined) {
+      groupsData.splice(parseInt(selectedId) - 1);
+    } else {
+      alert('Selected group to delete is undefined!\nIf you are encountering this error with the modal open, please close it and try again.');
+    }
+    setGroupModalVisible(false);
+  }
   
   return (
     <View style={styles.container}>
@@ -127,8 +149,10 @@ const Groups: React.FC<Props> = ({ navigation }) => {
 
         <NewGroupForm 
           enabled={newGroupFormVisible}
+          data={groupsData}
+          setAuthorName={setUserAuthor}
           closeForm={closeNewGroupForm}
-          data={groupsData}/>
+          />
 
         <Portal>
           <Modal
@@ -137,32 +161,44 @@ const Groups: React.FC<Props> = ({ navigation }) => {
             contentContainerStyle={[styles.container, {backgroundColor: '#eee'}]}>
               <View>
                 <View style={styles.modalTitle}>
-                  <Text id='modal-title' 
-                    style={styles.title}>{modalData[0]}</Text>
+                  <Text id='modal-title' style={styles.title}>
+                    {modalData[0]}
+                  </Text>
                 </View>
 
                 <View style={styles.modalPlayers}>
-                  <Text id='modal-currentplayers' 
-                    style={[styles.modalText, {fontSize: 18}]}>
+                  <Text id='modal-currentplayers' style={[styles.modalText, {fontSize: 18}]}>
                       Players: {modalData[2]}/{modalData[3]}
                   </Text>
                 </View>
 
                 <View style={styles.modalLabels}>
-                  <Text id='modal-labels' 
-                    style={styles.modalText}>{modalData[1]}</Text>
+                  <Text id='modal-labels' style={styles.modalText}>
+                    {modalData[1]}
+                  </Text>
                 </View>
                 
                 <View style={styles.modalDescription}>
-                  <Text id='modal-description' 
-                    style={styles.modalText}>{modalData[5]}</Text>
+                  <Text id='modal-description' style={styles.modalText}>
+                    {modalData[5]}
+                  </Text>
                 </View>
                 
-                <TouchableOpacity
-                  style={styles.modalButton} 
-                  onPress={() => setGroupModalVisible(false)}>
-                  <Text>Close</Text>
-                </TouchableOpacity>
+                <View style={{flexDirection: 'row', justifyContent: 'center', gap: 40}}>
+                  <TouchableOpacity
+                    style={styles.modalButton} 
+                    onPress={() => setGroupModalVisible(false)}>
+                    <Text style={{textAlign: 'center'}}>Close</Text>
+                  </TouchableOpacity>
+
+                  {userAuthor["isAuthor"] ? // If the author of the group is the current user
+                    <TouchableOpacity
+                      style={[styles.modalButton, {backgroundColor: '#f55', paddingHorizontal: 5}]}
+                      onPress={deleteGroup}>
+                      <Text style={{textAlign: 'center'}}>Delete</Text>
+                    </TouchableOpacity>
+                  : null}
+                </View>
               </View>
           </Modal>
         </Portal>

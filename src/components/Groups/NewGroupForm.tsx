@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, TouchableOpacity, Keyboard } from 'react-native';
 
 // styling
 import styles from '../../../src/styles.tsx';
@@ -8,11 +8,15 @@ import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
 interface Props {
   enabled: boolean,
-  closeForm: () => void,
   data: any,
+  setAuthorName: React.Dispatch<React.SetStateAction<{
+    name: string | undefined;
+    isAuthor: boolean;
+  }>>,
+  closeForm: () => void,
 }
 
-const NewGroupForm: React.FC<Props> = ({enabled, closeForm, data}) => {
+const NewGroupForm: React.FC<Props> = ({enabled, data, setAuthorName, closeForm}) => {
   const groupsData = data;
   const [title, setTitle] = useState<string>('');
   const [labels, setLabels] = useState<string>('');
@@ -21,6 +25,8 @@ const NewGroupForm: React.FC<Props> = ({enabled, closeForm, data}) => {
   const [tagline, setTagline] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [author, setAuthor] = useState<string>('');
+
+  const authorRef = useRef<any>(null);
 
   /**
    * Sets state to the input based on type
@@ -47,9 +53,16 @@ const NewGroupForm: React.FC<Props> = ({enabled, closeForm, data}) => {
         setDescription(input);
         break;
       case 'author':
+        console.log(input)
         setAuthor(input);
+        setAuthorName({name: input, isAuthor: false}); // arg2 unnecessary, will be set in parent
         break;
     }
+  }
+
+  function handleFormSubmit(): void {
+    authorRef?.current?.blur()
+    newGroup(title, labels, currentPlayers, maxPlayers, tagline, description, author)
   }
 
   /**
@@ -64,8 +77,8 @@ const NewGroupForm: React.FC<Props> = ({enabled, closeForm, data}) => {
    */
   function newGroup(title: string, labels: string, currentPlayers: number,  maxPlayers: number,  tagline: string,  description: string, author: string): void {
     const newGroupId = groupsData.length + 1;
-    const labelsList = labels.split(', ');
-    
+    const labelsList = labels.split(',');
+
     const newGroup = {
       id: newGroupId.toString(),
       title: title,
@@ -89,6 +102,7 @@ const NewGroupForm: React.FC<Props> = ({enabled, closeForm, data}) => {
     };
 
     groupsData.push(newGroup);
+    closeForm();
   }
 
   return (
@@ -101,7 +115,9 @@ const NewGroupForm: React.FC<Props> = ({enabled, closeForm, data}) => {
               <Text style={{fontSize: 20}}>Group Name</Text>
               <TextInput id='group-name' style={styles.formInputs}
                 mode={'outlined'}
-                onBlur={(text) => handleFormInput('title', text)}/>
+                autoFocus={true}
+
+                onEndEditing={(e) => handleFormInput('title', e.nativeEvent.text)}/>
             </View>
 
             <View style={styles.newGroupLabels}>
@@ -109,7 +125,7 @@ const NewGroupForm: React.FC<Props> = ({enabled, closeForm, data}) => {
               <Text style={{fontStyle: 'italic'}}>How would you label this group? (Separate with commas)</Text>
               <TextInput id='group-labels' style={styles.formInputs}
                 mode={'outlined'}
-                onBlur={(text) => handleFormInput('labels', text)}/>
+                onEndEditing={(e) => handleFormInput('labels', e.nativeEvent.text)}/>
             </View>
 
             <View style={styles.newGroupPlayers}>
@@ -119,12 +135,14 @@ const NewGroupForm: React.FC<Props> = ({enabled, closeForm, data}) => {
                 <TextInput id='group-currentPlayers' 
                   style={[styles.formInputs, {maxWidth: 50, textAlign: 'center'}]}
                   mode={'outlined'}
-                  onBlur={(text) => handleFormInput('currentPlayers', text)}/>
+                  keyboardType={'numeric'}
+                  onEndEditing={(e) => handleFormInput('currentPlayers', e.nativeEvent.text)}/>
                 <Text style={{paddingHorizontal: 10}}>current</Text>
                 <TextInput id='group-maxPlayers' 
                   style={[styles.formInputs, {maxWidth: 50, textAlign: 'center'}]}
                   mode={'outlined'}
-                  onBlur={(text) => handleFormInput('maxPlayers', text)}/>
+                  keyboardType={'numeric'}
+                  onEndEditing={(e) => handleFormInput('maxPlayers', e.nativeEvent.text)}/>
                 <Text style={{paddingHorizontal: 10}}>maximum</Text>
               </View>
             </View>
@@ -134,7 +152,7 @@ const NewGroupForm: React.FC<Props> = ({enabled, closeForm, data}) => {
               <Text style={{fontStyle: 'italic'}}>Write a short tagline.</Text>
               <TextInput id='group-tagline' style={styles.formInputs}
                 mode={'outlined'}
-                onBlur={(text) => handleFormInput('tagline', text)}/>
+                onEndEditing={(e) => handleFormInput('tagline', e.nativeEvent.text)}/>
             </View>
             
             <View style={styles.newGroupDescription}>
@@ -142,7 +160,7 @@ const NewGroupForm: React.FC<Props> = ({enabled, closeForm, data}) => {
               <Text style={{fontStyle: 'italic'}}>Write a description. If you have them, put links here!</Text>
               <TextInput id='group-description' style={styles.formInputs}
                 mode={'outlined'}
-                onBlur={(text) => handleFormInput('description', text)}/>
+                onEndEditing={(e) => handleFormInput('description', e.nativeEvent.text)}/>
             </View>
 
             <View style={styles.newGroupAuthor}>
@@ -150,13 +168,14 @@ const NewGroupForm: React.FC<Props> = ({enabled, closeForm, data}) => {
               <Text style={{fontStyle: 'italic'}}>Who's creating this group?</Text>
               <TextInput id='group-author' style={styles.formInputs}
                 mode={'outlined'}
-                onBlur={(text) => handleFormInput('author', text)}/>
+                ref={authorRef}
+                onEndEditing={(e) => handleFormInput('author', e.nativeEvent.text)}/>
             </View>
             
             <View style={{flexDirection: 'row', justifyContent: 'center', gap: 40}}>
               <TouchableOpacity
-                style={[styles.newGroupButton, {paddingHorizontal: 5}]} 
-                onPress={() => newGroup(title, labels, currentPlayers, maxPlayers, tagline, description, author)}>
+                style={[styles.newGroupButton, {paddingHorizontal: 5, backgroundColor: '#3b3'}]} 
+                onPress={() => handleFormSubmit()}>
                 <Text style={{textAlign: 'center'}}>Create</Text>
               </TouchableOpacity>
 

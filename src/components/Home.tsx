@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Button, Pressable } from 'react-native';
 
 // styling
-import styles from '../styles.tsx';
+import styles, { Colors } from '../styles.tsx';
 import { Appbar, PaperProvider, Portal } from 'react-native-paper';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
@@ -38,14 +38,14 @@ const Home: React.FC<Props> = ({ navigation }) => {
 
         <View style={[styles.container, {flexDirection: 'column', justifyContent: 'space-evenly'}]}>
           <Text style={[styles.titleAlt,{margin: 20}]}>What's available</Text>
-          <View style={{flex: 1, backgroundColor: '#f55'}}>
+          <View style={{flex: 1, backgroundColor: Colors.sheets.primary}}>
             <Text style={[styles.title, {marginTop: 10}]}>Sheets</Text>
             <Text style={{top: 10, paddingHorizontal: 15}}>
               Create new characters, edit existing ones, and organize them.
             </Text>
           </View>
 
-          <View style={{flex: 1, backgroundColor: '#4a4'}}>
+          <View style={{flex: 1, backgroundColor: Colors.notes.primary}}>
             <Text style={[styles.title, {marginTop: 10}]}>Notes</Text>
             <Text style={{top: 10, paddingHorizontal: 15}}>
               Take notes about anything. {"\n \n"}
@@ -54,7 +54,7 @@ const Home: React.FC<Props> = ({ navigation }) => {
             </Text>
           </View>
 
-          <View style={{flex: 1, backgroundColor: '#6496e8'}}>
+          <View style={{flex: 1, backgroundColor: Colors.groups.primary}}>
             <Text style={[styles.title, {marginTop: 10}]}>Groups</Text>
             <Text style={{top: 10, paddingHorizontal: 15}}>
               Find a group to play with that matches
@@ -63,7 +63,7 @@ const Home: React.FC<Props> = ({ navigation }) => {
             </Text>
           </View>
 
-          <View style={{flex: 1, backgroundColor: '#ff70ff'}}>
+          <View style={{flex: 1, backgroundColor: Colors.diceRoller.primary}}>
             <Text style={[styles.title, {marginTop: 10}]}>Dice</Text>
             <Text style={{top: 10, paddingHorizontal: 15}}>
               Roll any number of dice from the classic array. {"\n \n"}
