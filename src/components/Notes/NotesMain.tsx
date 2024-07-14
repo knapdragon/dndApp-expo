@@ -11,6 +11,7 @@ import notesData from '../../userdata/notesData.json';
 import Settings from '../Settings.tsx';
 import MainMenu from '../MainMenu.tsx';
 import NewMenu from '../NewMenu.tsx';
+import NewNoteForm from './NewNoteForm.tsx';
 
 // Navigation
 interface Props {
@@ -60,6 +61,14 @@ const Notes: React.FC<Props> = ({ navigation }) => {
     setSettingsVisible(false);
   }
   const [newMenuVisible, setNewMenuVisible] = useState(false);
+  const [newNoteFormVisible, setNewNoteFormVisible] = useState(false);
+  function openNewNoteForm (): void {
+    setNewNoteFormVisible(true);
+    setNewMenuVisible(false);
+  }
+  function closeNewNoteForm(): void {
+    setNewNoteFormVisible(false);
+  }
 
   const [noteVisible, setNoteVisible] = useState(false);
   const [noteData, setNoteData] = useState<Array<any>>([]);
@@ -82,22 +91,6 @@ const Notes: React.FC<Props> = ({ navigation }) => {
   const renderItem = ({item}: {item: ItemData}) => {
     return (  <Item item={item} onPress={() => handleItemSelect(item)}/>  );
   };
-  
-  /**
-   * Create a new note with the given data. 
-   * */
-  function newNote() {
-    alert('Button pressed!');
-    const newNoteId = notesData.length + 1;
-    const newNote = {
-      id: newNoteId,
-      title: 'New Note ' + newNoteId,
-      content: '',
-      colour: 'default',
-    };
-
-    notesData.push(newNote);
-  }
 
   /**
    * Saves the contents of a note. 
@@ -110,24 +103,13 @@ const Notes: React.FC<Props> = ({ navigation }) => {
   /** 
    * Delete a note with the given id. 
    * */
-  function deleteNote() {
-    let dialogVisible = true;
-    return (
-      <Dialog visible={dialogVisible}>
-        <Dialog.Title>Really delete this note?</Dialog.Title>
-        <Dialog.Actions>
-          <TouchableOpacity onPress={() => deleteConfirmed()} style={[styles.dialogButton, {backgroundColor: '#f55'}]}>
-            <Text>Yes, delete</Text>
-          </TouchableOpacity>
-          <Button onPress={() => dialogVisible = false}>Cancel</Button>
-        </Dialog.Actions>
-      </Dialog>
-    )
-  }
-
-  function deleteConfirmed(): void {
-    alert('Note id: ' + selectedId);
-    // notesData.splice(parseInt(selectedId));
+  function deleteNote(): void {
+    if (selectedId != undefined) {
+      notesData.splice(parseInt(selectedId) - 1);
+    } else {
+      alert('Selected note to delete is undefined!\nIf you are encountering this error with a note open, please close it and try again.');
+    }
+    setNoteVisible(false);
   }
 
   // Notes begins
@@ -139,7 +121,7 @@ const Notes: React.FC<Props> = ({ navigation }) => {
               tabOrigin={tabOrigin}
               enabled={newMenuVisible}
               setNewMenuVisible={setNewMenuVisible}
-              newItem={newNote}
+              newItem={openNewNoteForm}
               />
             <MainMenu 
               tabOrigin={tabOrigin}
@@ -156,6 +138,11 @@ const Notes: React.FC<Props> = ({ navigation }) => {
         keyExtractor={(item) => item.id.toString()}
         extraData={selectedId}
         renderItem={renderItem}/>
+
+      <NewNoteForm 
+        enabled={newNoteFormVisible}
+        data={notesData}
+        closeForm={closeNewNoteForm}/>
 
       {/* Overlays — should not be flexible */}
       <View style={{flex: 0}}>

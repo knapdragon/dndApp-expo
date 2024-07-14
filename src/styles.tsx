@@ -126,6 +126,34 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 
+  newNoteContainer: {
+    flex: 0,
+    height: "60%",
+    backgroundColor: '#fff',  
+  },
+
+  newNoteTitle: {
+    top: 0,
+  },
+
+  newNoteContent: {
+    top: 0,
+  },
+
+  newNoteColour: {
+    // unused, for now
+  },
+
+  newNoteActions:  {
+    
+  },
+
+  newNoteButton: {
+    bottom: "0%",
+    padding: 10,
+    borderRadius: 10,
+  },
+
   // Groups
   modalText: {
       flex: 0,

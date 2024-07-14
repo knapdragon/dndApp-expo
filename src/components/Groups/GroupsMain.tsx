@@ -62,6 +62,7 @@ const Groups: React.FC<Props> = ({ navigation }) => {
   const [newGroupFormVisible, setNewGroupFormVisible] = useState(false);
   function openNewGroupForm(): void {
     setNewGroupFormVisible(true);
+    setNewMenuVisible(false);
   }
   function closeNewGroupForm(): void {
     setNewGroupFormVisible(false);
@@ -151,8 +152,7 @@ const Groups: React.FC<Props> = ({ navigation }) => {
           enabled={newGroupFormVisible}
           data={groupsData}
           setAuthorName={setUserAuthor}
-          closeForm={closeNewGroupForm}
-          />
+          closeForm={closeNewGroupForm}/>
 
         <Portal>
           <Modal
