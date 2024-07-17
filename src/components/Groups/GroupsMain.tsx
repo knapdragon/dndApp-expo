@@ -97,7 +97,6 @@ const Groups: React.FC<Props> = ({ navigation }) => {
     } else {
       setUserAuthor({name: userAuthor["name"], isAuthor: false});
     }
-    console.log(groupData?.author, userAuthor["name"], userAuthor["isAuthor"]);
     setModalData(allGroupData);
   }, [Item, groupsData, selectedId]);
 
@@ -116,7 +115,7 @@ const Groups: React.FC<Props> = ({ navigation }) => {
 
   function deleteGroup(): void {
     if (selectedId != undefined) {
-      groupsData.splice(parseInt(selectedId) - 1);
+      groupsData.splice(parseInt(selectedId) - 1, 1);
     } else {
       alert('Selected group to delete is undefined!\nIf you are encountering this error with the modal open, please close it and try again.');
     }

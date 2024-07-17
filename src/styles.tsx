@@ -266,17 +266,64 @@ const styles = StyleSheet.create({
 
   diceSelect: {
     position: 'absolute',
-    top: 10,
+    top: 15,
     right: '30%',
     flex: 0.5, 
     justifyContent: 'space-evenly', 
     alignItems: 'center',
     flexDirection: 'column',
+    gap: 10,
   },
 
-  button: {
+  buffsArea: {
+    position: 'absolute', 
+    top: -420,
+    left: '75%',
+    gap: 20, 
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+
+  buffsEach: {
+    top: 470, 
+    alignItems: 'center', 
+    gap: 5
+  },
+  
+  buffInput: {
+    width: 50, 
+    height: 50,
+  },
+
+  rollingDisplay: {
+    fontWeight: 'bold', 
+    textAlign: 'center',
+    top: 560, 
+    flexDirection: 'row', 
+    flexWrap: 'wrap'
+  },
+
+  diceActions: {
+    bottom: '5%',
+    flex: 0.1, 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'center'
+  },
+
+  diceButton: {
     padding: 10,
     borderRadius: 10,
+  },
+
+  diceDialogImportantArea: {
+    top: 0,
+    gap: 20, 
+  },
+
+  diceDialogImportantEach: {
+    top: 0,
+    gap: 5
   },
 
 });

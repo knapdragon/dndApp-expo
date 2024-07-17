@@ -53,7 +53,6 @@ const NewGroupForm: React.FC<Props> = ({enabled, data, setAuthorName, closeForm}
         setDescription(input);
         break;
       case 'author':
-        console.log(input)
         setAuthor(input);
         setAuthorName({name: input, isAuthor: false}); // arg2 unnecessary, will be set in parent
         break;
