@@ -1,5 +1,5 @@
-import React, {useCallback, useState} from 'react';
-import { Text, FlatList, Pressable, TouchableNativeFeedback, View, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { Text, FlatList, TouchableNativeFeedback, View, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
@@ -9,36 +9,18 @@ import { Menu as PaperMenu, Button, Dialog } from 'react-native-paper';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
 // data
+import { Character } from './CharacterSheet';
+import { Actions } from './CharacterSheet';
+import { Inventory } from './CharacterSheet';
 import sheetsData from '../../userdata/sheetsData.json';
+import CharacterSheetType from '../../userdata/sheetsDataType';
 
-export const Character: React.FC<Props> = ({navigation}) => {
-  
-  return (
-    <View style={styles.container}>
-      <Text>Hello</Text>
-    </View>
-  )
-}
-
-export const Actions: React.FC<Props> = ({navigation}) => {
-  
-  return (
-    <View style={styles.container}>
-      
-    </View>
-  )
-}
-
-export const Inventory: React.FC<Props> = ({navigation}) => {
-  
-  return (
-    <View style={styles.container}>
-      
-    </View>
-  )
+interface Props {
+  navigation: any
 }
 
 const Tab = createMaterialTopTabNavigator();
+
 export const SheetNavigation: React.FC<Props> = ({}) => {
   return (
     <NavigationContainer independent={true}>
@@ -47,15 +29,15 @@ export const SheetNavigation: React.FC<Props> = ({}) => {
         initialRouteName='Character' 
         backBehavior={'history'}>
         <Tab.Screen 
-          name="Character" 
-          component={Character} 
+          name="Character"    // @ts-expect-error (affects next line)
+          component={Character}
           options={{
             lazy: true,
             tabBarPressColor: '#ccf',
             tabBarIcon: ({}) => (<Icon name="account" color={'blue'} size={20}/>)}}/>
 
         <Tab.Screen 
-          name="Actions" 
+          name="Actions"      // @ts-expect-error (affects next line)
           component={Actions}
           options={{
             lazy: true,
@@ -64,7 +46,7 @@ export const SheetNavigation: React.FC<Props> = ({}) => {
             tabBarIcon: ({}) => (<Icon name="sword-cross" color={'red'} size={20}/>)}}/>
 
         <Tab.Screen 
-          name="Inventory" 
+          name="Inventory"    // @ts-expect-error (affects next line)
           component={Inventory}
           options={{
             lazy: true,
@@ -76,25 +58,12 @@ export const SheetNavigation: React.FC<Props> = ({}) => {
   )
 }
 
-interface Props {
-  navigation: any
-}
-
 const SheetList: React.FC<Props> = ({ navigation }) => {
   const [sheetDialogVisible, setSheetDialogVisible] = useState(false);
-  const [sheetDialogTab, setSheetDialogTab] = useState<string | number>(1)
   const [charSheet, setCharSheet] = useState<any>([]);
 
   // Rendering FlatList items
-  type ItemData = {
-    id: number;
-    image: string;
-    name: string;
-    charLvl: number;
-    race: string;
-    mainClass: string;
-    multiClass: Array<String>;
-    };
+  type ItemData = CharacterSheetType;
   
   type ItemProps = {
     item: ItemData;
@@ -134,7 +103,7 @@ const SheetList: React.FC<Props> = ({ navigation }) => {
           {item.name}
         </Text>
         <Text style={[styles.text, {color: textColor}, {fontSize: 14}]}>
-          Level {item.charLvl} {item.race} {item.mainClass}{item.multiClass}
+          Level {item.characterLevel} {item.race} {item.mainClass}{item.multiClass?.length > 0 ? ' / ' + item.multiClass : null}
         </Text>
       </TouchableOpacity>
     </TouchableNativeFeedback>
@@ -224,24 +193,28 @@ const SheetList: React.FC<Props> = ({ navigation }) => {
     return (
       <>
         <FlatList 
+          // @ts-expect-error
           data={sheetsData}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
           extraData={selectedId}
           style={{backgroundColor: '#fff'}}/>
 
-        <Dialog visible={sheetDialogVisible} style={{backgroundColor: '#fff'}}>
+        <Dialog visible={sheetDialogVisible} style={{backgroundColor: '#fff', marginBottom: 130, height: '100%'}}>
           <Dialog.Title>{charSheet?.name}</Dialog.Title>
           <Text style={{marginHorizontal: 25, marginTop: -15}}>
-            Level {charSheet?.charLvl} {charSheet?.race} {charSheet?.mainClass}{charSheet?.multiClass}
+            Level {charSheet?.characterLevel} {charSheet?.race} {charSheet?.mainClass}{charSheet?.multiClass}
           </Text>
-          <View style={{marginTop: 20, borderBottomWidth: 1, borderBottomColor: 'gray'}} />
+          <View style={{marginTop: 15, borderBottomWidth: 1, borderBottomColor: 'gray'}} />
 
           <Dialog.Content>
             <Dialog.ScrollArea style={{height: '80%'}}>
-              <ScrollView style={{marginHorizontal: -48, marginBottom: -40}}>
-                <SheetNavigation navigation={navigation}/>
-              </ScrollView>
+                <FlatList 
+                  style={{marginHorizontal: -48, marginBottom: -40}}
+                  data={[]}
+                  renderItem={null}
+                  ListFooterComponent={<SheetNavigation navigation={navigation}/>}
+                  />
             </Dialog.ScrollArea>
           </Dialog.Content>
 

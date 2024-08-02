@@ -45,8 +45,9 @@ const Notes: React.FC<Props> = ({ navigation }) => {
 
           <Card.Content style={[{marginTop: 10}, {marginBottom: 20}]}>
             <Text>
-              {item.content.length > 192 ? 
-              item.content.slice(0, 192) + '...' : item.content}
+              {item.content.length > 192 ?        // if greater than 192 characters
+              item.content.slice(0, 192) + '...'  // truncate to 192 characters
+              : item.content}                     {/* otherwise display full content */}
             </Text>
           </Card.Content>
         </TouchableOpacity>
@@ -105,7 +106,7 @@ const Notes: React.FC<Props> = ({ navigation }) => {
    * */
   function deleteNote(): void {
     if (selectedId != undefined) {
-      notesData.splice(parseInt(selectedId) - 1);
+      notesData.splice(parseInt(selectedId) - 1, 1);
     } else {
       alert('Selected note to delete is undefined!\nIf you are encountering this error with a note open, please close it and try again.');
     }

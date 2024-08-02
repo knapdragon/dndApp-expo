@@ -2,19 +2,199 @@
     {
         "id": 1,
         "name": "Nohn Coe",
-        "image": "",
-        "charLvl": 1,
+        "imageURL": "",
+        "characterLevel": 1,
         "race": "Aarakocra",
         "mainClass": "Cleric",
-        "multiClass": ["/","Fighter"]
+        "multiClass": ["Fighter"],
+
+        "attributes": {
+            "proficiencyBonus": 2,
+
+            "hitPointsCurrent": 10,
+            "hitPointsMax": 10,
+            "hitPointsTemporary": 0,
+            "armourClass": 10,
+
+            "damageResistances": [""],
+            "damageImmunities": [""],
+            "damageVulnerabilities": [""],
+
+            "speed": 30,
+            "flySpeed": 0,
+            "swimSpeed": 0,
+            "climbSpeed": 0,
+
+            "abilities": {
+                "strength": 10,
+                "dexterity": 10,
+                "constitution": 10,
+                "intelligence": 10,
+                "wisdom": 10,
+                "charisma": 10,
+
+                "modifierStrength": 0,
+                "modifierDexterity": 0,
+                "modifierConstitution": 0,
+                "modifierIntelligence": 0,
+                "modifierWisdom": 0,
+                "modifierCharisma": 0
+            },
+
+            "skillProficiencies": {
+                "acrobatics": false,
+                "animalHandling": false,
+                "arcana": false,
+                "athletics": false,
+                "deception": false,
+                "history": false,
+                "insight": false,
+                "intimidation": false,
+                "investigation": false,
+                "medicine": false,
+                "nature": false,
+                "perception": false,
+                "performance": false,
+                "persuasion": false,
+                "religion": false,
+                "sleightOfHand": false,
+                "stealth": false,
+                "survival": false
+            },
+
+            "equipmentProficiencies": {
+                "simpleWeapons": true
+            }
+        },
+
+        "actions": {
+            "placeholder": null
+        },
+
+        "inventory": {
+            "currency": {
+                "Copper": 0,
+                "Silver": 0,
+                "Electrum": 0,
+                "Gold": 0,
+                "Platinum": 0
+            },
+
+            "items": [
+                {
+                    "name": "Clothes, common",
+                    "category": "Adventuring Gear",
+                    "quantity": 1
+                },
+                {
+                    "name": "Potion of Healing", 
+                    "category": "Magic Items",
+                    "quantity": 1
+                }
+            ]
+        },
+
+        "buffs": {
+            "placeholder": null
+        }
     },
     {
         "id": 2,
         "name": "Yane Loe",
-        "image": "",
-        "charLvl": 1,
-        "race": "Dwarf",
-        "mainClass": "Ranger",
-        "multiClass": []
+        "imageURL": "",
+        "characterLevel": 1,
+        "race": "Human",
+        "mainClass": "NPC",
+        "multiClass": [],
+
+        "attributes": {
+            "proficiencyBonus": 2,
+
+            "hitPointsCurrent": 10,
+            "hitPointsMax": 10,
+            "hitPointsTemporary": 0,
+            "armourClass": 10,
+
+            "damageResistances": [""],
+            "damageImmunities": [""],
+            "damageVulnerabilities": [""],
+
+            "speed": 30,
+            "flySpeed": 0,
+            "swimSpeed": 0,
+            "climbSpeed": 0,
+
+            "abilities": {
+                "strength": 10,
+                "dexterity": 10,
+                "constitution": 10,
+                "intelligence": 10,
+                "wisdom": 10,
+                "charisma": 10,
+
+                "modifierStrength": 0,
+                "modifierDexterity": 0,
+                "modifierConstitution": 0,
+                "modifierIntelligence": 0,
+                "modifierWisdom": 0,
+                "modifierCharisma": 0
+            },
+
+            "skillProficiencies": {
+                "acrobatics": false,
+                "animalHandling": false,
+                "arcana": false,
+                "athletics": false,
+                "deception": false,
+                "history": false,
+                "insight": false,
+                "intimidation": false,
+                "investigation": false,
+                "medicine": false,
+                "nature": false,
+                "perception": false,
+                "performance": false,
+                "persuasion": false,
+                "religion": false,
+                "sleightOfHand": false,
+                "stealth": false,
+                "survival": false
+            },
+
+            "equipmentProficiencies": {
+                "simpleWeapons": true
+            }
+        },
+
+        "actions": {
+            "placeholder": null
+        },
+
+        "inventory": {
+            "currency": {
+                "Copper": 0,
+                "Silver": 0,
+                "Electrum": 0,
+                "Gold": 0,
+                "Platinum": 0
+            },
+
+            "items": [
+                {
+                    "name": "Clothes, common",
+                    "category": "Adventuring Gear",
+                    "quantity": 1
+                },
+                {
+                    "name": "Potion of Healing", 
+                    "category": "Magic Items",
+                    "quantity": 1
+                }
+            ]
+        },
+
+        "buffs": {
+            "placeholder": null
+        }
     }
 ]

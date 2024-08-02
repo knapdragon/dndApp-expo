@@ -25,6 +25,7 @@ export const Colors = {
 
   diceRoller: {
     primary: '#ff70ff',
+    buttons: '#f5a2f5',
   },
 }
 
@@ -38,6 +39,19 @@ const styles = StyleSheet.create({
 
   frame: {
     marginTop: -10,
+  },
+
+  evenRowView: {
+    display: 'flex',
+    flexDirection: 'row', 
+    justifyContent: 'space-evenly',
+  },
+
+  evenColumnView: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 2,
   },
 
   title: {
@@ -84,6 +98,26 @@ const styles = StyleSheet.create({
     left: 230,
   },
 
+  informationButton: {
+    width: 28,
+    height: 28,
+    padding: 3,
+    backgroundColor: '#87CEEB',
+    borderWidth: 0.1,
+    borderRadius: 50,
+  },
+
+  smallNumericInputs: {
+    width: 50,
+    height: 40,
+    textAlignVertical: 'center',
+  },
+
+  smallNumericContent: {
+    textAlign: 'center', 
+    paddingLeft: 0,
+  },
+
   // Home
   diceColumn: {
     position: 'absolute',
@@ -111,6 +145,57 @@ const styles = StyleSheet.create({
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
   },
+
+  newSheetContainer: {
+    flex: 0,
+    height: "40%",
+    backgroundColor: '#fff',  
+  },
+
+  newSheetTitle: {
+    top: 0,
+  },
+
+  newSheetContent: {
+    top: 0,
+  },
+
+  newSheetButton: {
+    bottom: "0%",
+    padding: 10,
+    borderRadius: 15,
+  },
+
+  abilityScoreDisplay: {
+    position: 'absolute',
+    top: 40,
+    left: '10%',
+    flex: 0.5, 
+    justifyContent: 'space-evenly',
+    flexDirection: 'column',
+    gap: 14,
+  },
+
+  abilityScoreSelect: {
+    position: 'absolute',
+    top: 40,
+    right: '10%',
+    flex: 0.5, 
+    justifyContent: 'space-evenly', 
+    alignItems: 'center',
+    flexDirection: 'column',
+    gap: 10,
+  },
+
+  proficienciesDisplay: {
+    position: 'absolute',
+    top: 40,
+    left: '5%',
+    gap: 5,
+  },
+
+  // CharacterSheet
+  
 
   // Notes
   card: {
@@ -151,7 +236,7 @@ const styles = StyleSheet.create({
   newNoteButton: {
     bottom: "0%",
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 15,
   },
 
   // Groups
@@ -254,7 +339,7 @@ const styles = StyleSheet.create({
   },
 
   // DiceRoller.tsx
-  diceDisplay: {
+  diceIcons: {
     position: 'absolute',
     top: 10,
     left: '30%',
@@ -295,7 +380,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
 
-  rollingDisplay: {
+  currentDiceDisplay: {
     fontWeight: 'bold', 
     textAlign: 'center',
     top: 560, 
@@ -317,13 +402,17 @@ const styles = StyleSheet.create({
   },
 
   diceDialogImportantArea: {
-    top: 0,
-    gap: 20, 
+    top: 30,
+    justifyContent: 'space-between', 
+    flexDirection: 'row',
   },
 
   diceDialogImportantEach: {
     top: 0,
-    gap: 5
+    gap: 5,
+    backgroundColor: Colors.diceRoller.buttons,
+    borderRadius: 20,
+    padding: 8,
   },
 
 });

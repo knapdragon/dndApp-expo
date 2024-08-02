@@ -2,10 +2,9 @@ import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, Keyboard } from 'react-native';
 
 // styling
-import styles from '../../../src/styles.tsx';
-import { Portal, Modal, Dialog, TextInput } from 'react-native-paper';
+import styles, { Colors } from '../../../src/styles.tsx';
+import { Portal, Dialog, TextInput } from 'react-native-paper';
 import { Divider } from '@rneui/themed';
-import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
 interface Props {
   enabled: boolean,
@@ -95,7 +94,7 @@ const NewNoteForm: React.FC<Props> = ({enabled, data, closeForm}) => {
         <Dialog.Actions>
           <View style={{flexDirection: 'row', justifyContent: 'center', gap: 40}}>
             <TouchableOpacity
-              style={[styles.newNoteButton, {paddingHorizontal: 5, backgroundColor: '#3b3'}]} 
+              style={[styles.newNoteButton, {paddingHorizontal: 10, backgroundColor: Colors.common.buttonApplyCreate}]} 
               onPress={() => newNote(title, content, colour)}>
               <Text style={{textAlign: 'center'}}>Create</Text>
             </TouchableOpacity>

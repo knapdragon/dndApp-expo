@@ -11,6 +11,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Settings from '../Settings.tsx';
 import MainMenu from '../MainMenu.tsx';
 import NewMenu from '../NewMenu.tsx';
+import NewSheetForm from './NewSheetForm.tsx';
+import sheetsData from '../../userdata/sheetsData.json';
 import SheetList from './SheetList.tsx';
 
 const Stack = createNativeStackNavigator();  
@@ -29,9 +31,13 @@ const Sheets: React.FC<Props> = ({ navigation }) => {
     setSettingsVisible(false);
   }
   const [newMenuVisible, setNewMenuVisible] = useState(false);
-
-  function newSheet() {
-    alert('Button pressed!');
+  const [newSheetFormVisible, setNewSheetFormVisible] = useState(false);
+  function openNewSheetForm (): void {
+    setNewSheetFormVisible(true);
+    setNewMenuVisible(false);
+  }
+  function closeNewSheetForm(): void {
+    setNewSheetFormVisible(false);
   }
 
   // Sheets starts
@@ -44,7 +50,7 @@ const Sheets: React.FC<Props> = ({ navigation }) => {
                 tabOrigin={tabOrigin}
                 enabled={newMenuVisible}
                 setNewMenuVisible={setNewMenuVisible}
-                newItem={newSheet}/>
+                newItem={openNewSheetForm}/>
               <MainMenu 
                 tabOrigin={tabOrigin}
                 enabled={mainMenuVisible}
@@ -53,6 +59,11 @@ const Sheets: React.FC<Props> = ({ navigation }) => {
                 />
         </Appbar.Header>
       </View>
+
+      <NewSheetForm 
+        enabled={newSheetFormVisible}
+        data={sheetsData}
+        closeForm={closeNewSheetForm}/>
       
       <View style={styles.container}>
         <Stack.Navigator screenOptions={{headerShown: false}}>

@@ -4,7 +4,7 @@ import { View, Text, Modal as RNModal, ScrollView, TouchableOpacity } from 'reac
 // styling
 import styles from '../../styles.tsx';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
-import { PaperProvider, Portal, Modal, Dialog, Button } from 'react-native-paper';
+import { PaperProvider, Portal, Modal, Dialog, Button, TextInput } from 'react-native-paper';
 
 interface NoteProps {
   enabled: boolean;
@@ -15,7 +15,10 @@ interface NoteProps {
 }
 
 const Note: React.FC<NoteProps> = ({ enabled, data, saveNote, closeNote, deleteNote }) => {
-  
+  let noteHeight = 100;
+  if (data[1] !== undefined) {
+    noteHeight = data[1].length > 100 ? 500 : data[1].length + 10;
+  }
   return (
     <PaperProvider>
       <View style={styles.container}>
@@ -28,7 +31,13 @@ const Note: React.FC<NoteProps> = ({ enabled, data, saveNote, closeNote, deleteN
                 <Dialog.Content>
                   <Dialog.ScrollArea style={{height: (data[1].length > 100 ? 500 : data[1].length + 10)}}>
                     <ScrollView style={{marginHorizontal: -15, marginBottom: -40}}>
-                      <Text>{data[1]}</Text>
+                      <TextInput
+                        style={{backgroundColor: 'transparent', fontSize: 13, left: -10}}
+                        outlineColor='transparent'
+                        activeOutlineColor='transparent'
+                        mode="outlined"
+                        multiline={true}
+                        value={data[1]}/>
                     </ScrollView>
                   </Dialog.ScrollArea>
                 </Dialog.Content>

@@ -1,28 +1,29 @@
-export const JSON_SRD = 
-[
-  ' ./5e-SRD-Ability-Scores.json',
-  './5e-SRD-Alignments.json',
-  './5e-SRD-Backgrounds.json',
-  './5e-SRD-Classes.json',
-  './5e-SRD-Conditions.json',
-  './5e-SRD-Damage-Types.json',
-  './5e-SRD-Equipment-Categories.json',
-  './5e-SRD-Equipment.json',
-  './5e-SRD-Feats.json',
-  './5e-SRD-Features.json',
-  './5e-SRD-Languages.json',
-  './5e-SRD-Levels.json',
-  './5e-SRD-Magic-Items.json',
-  './5e-SRD-Magic-Schools.json',
-  './5e-SRD-Monsters.json',
-  './5e-SRD-Proficiencies.json',
-  './5e-SRD-Races.json',
-  './5e-SRD-Rule-Sections.json',
-  './5e-SRD-Rules.json',
-  './5e-SRD-Skills.json',
-  './5e-SRD-Spells.json',
-  './5e-SRD-Subclasses.json',
-  './5e-SRD-Subraces.json',
-  './5e-SRD-Traits.json',
-  './5e-SRD-Weapon-Properties.json'
-]
+import equipmentCategoriesSRD from './5e-SRD-Equipment-Categories.json';
+import equipmentSRD from './5e-SRD-Equipment.json';
+import magicItemsSRD from './5e-SRD-Magic-Items.json';
+
+const categories = [];
+for (let i = 0; i < equipmentCategoriesSRD.length; i++) {
+  categories.push(equipmentCategoriesSRD[i].name);
+}
+
+const weaponsData = equipmentSRD.filter((item) => item.equipment_category.name === "Weapon");
+const armorData = equipmentSRD.filter((item) => item.equipment_category.name === "Armor");
+const adventuringGearData = equipmentSRD.filter((item) => item.equipment_category.name === "Adventuring Gear");
+const ammoData = equipmentSRD.filter((item) => item.equipment_category.name === "Ammunition");
+const toolsData = equipmentSRD.filter((item) => item.equipment_category.name === "Tools");
+const vehiclesData = equipmentSRD.filter((item) => item.equipment_category.name === "Vehicle");
+const equipmentPacksData = equipmentSRD.filter((item) => item.equipment_category.name === "Equipment Packs");
+const magicItemsData = magicItemsSRD;
+
+export const equipmentData = {
+  "Categories":       categories,
+  "Weapons":          weaponsData,
+  "Armour":           armorData,
+  "Adventuring Gear": adventuringGearData,
+  "Ammunition":       ammoData,
+  "Tools":            toolsData,
+  "Vehicles":         vehiclesData,
+  "Equipment Packs":  equipmentPacksData,
+  "Magic Items":      magicItemsData,
+}

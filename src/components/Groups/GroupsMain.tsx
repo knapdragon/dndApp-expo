@@ -2,8 +2,8 @@ import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 
 // styling
-import styles from '../../../src/styles.tsx';
-import { Appbar, Portal, Modal, PaperProvider } from 'react-native-paper';
+import styles, { Colors } from '../../../src/styles.tsx';
+import { Appbar, Portal, Modal, PaperProvider, TextInput } from 'react-native-paper';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
 // data
@@ -12,6 +12,7 @@ import NewGroupForm from './NewGroupForm.tsx';
 import Settings from '../Settings.tsx';
 import MainMenu from '../MainMenu.tsx';
 import NewMenu from '../NewMenu.tsx';
+import { FAB } from '@rneui/themed';
 
 interface Props {
   navigation: any,
@@ -68,6 +69,8 @@ const Groups: React.FC<Props> = ({ navigation }) => {
     setNewGroupFormVisible(false);
   }
 
+  const [searchVisible, setSearchVisible] = useState(false);
+
   // Groups-specific states
   const [groupModalVisible, setGroupModalVisible] = useState(false);
   const [modalData, setModalData] = useState<Array<any>>([]);
@@ -77,6 +80,7 @@ const Groups: React.FC<Props> = ({ navigation }) => {
   }); 
 
   const [selectedId, setSelectedId] = useState<string | undefined>("");
+  
   const handleItemSelect = useCallback((item: ItemData) => {
     setSelectedId(item.id);
     setGroupModalVisible(true);
@@ -202,7 +206,18 @@ const Groups: React.FC<Props> = ({ navigation }) => {
           </Modal>
         </Portal>
       </PaperProvider>
-      
+
+      <FAB
+        color={Colors.groups.primary}
+        placement='right'
+        icon={{name: 'magnify', type: 'material-community', color: 'black'}}
+        onPress={() => setSearchVisible(!searchVisible)}/>
+      {searchVisible &&
+        <Text style={{fontSize: 16, textAlign: 'right', right: 100, bottom: 35}}>
+          This is a work in progress
+        </Text>
+      }
+
       <View style={{flex: 0}}>
         {settingsVisible ? 
           <Settings tabOrigin={tabOrigin} enabled={settingsVisible} closeDialog={closeSettingsDialog}/>
