@@ -1,6 +1,10 @@
 [
   {
-    "name": "d24",
-    "sides": 24
+    "name": "d2",
+    "sides": 2
+  },
+  {
+    "name": "d3",
+    "sides": 3
   }
 ]

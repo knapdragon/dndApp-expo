@@ -81,11 +81,13 @@ const Groups: React.FC<Props> = ({ navigation }) => {
 
   const [selectedId, setSelectedId] = useState<string | undefined>("");
   
-  const handleItemSelect = useCallback((item: ItemData) => {
+  function handleItemSelect(item: ItemData) {
     setSelectedId(item.id);
-    setGroupModalVisible(true);
+    updateGroup(item.id)
+  };
 
-    const groupData = groupsData.find(item => item.id == selectedId);
+  function updateGroup(groupId: string): void {
+    const groupData = groupsData.find(item => item.id == groupId);
     const allGroupData = [
       groupData?.title,
       groupData?.labels,
@@ -102,7 +104,8 @@ const Groups: React.FC<Props> = ({ navigation }) => {
       setUserAuthor({name: userAuthor["name"], isAuthor: false});
     }
     setModalData(allGroupData);
-  }, [Item, groupsData, selectedId]);
+    setGroupModalVisible(true);
+  };
 
   const renderItem = ({item}: {item: ItemData}) => {
     const backgroundColor = item.id.toString() === selectedId ? '#777' : '#eee';
@@ -208,6 +211,7 @@ const Groups: React.FC<Props> = ({ navigation }) => {
       </PaperProvider>
 
       <FAB
+        visible={!newGroupFormVisible}
         color={Colors.groups.primary}
         placement='right'
         icon={{name: 'magnify', type: 'material-community', color: 'black'}}

@@ -189,9 +189,8 @@ const styles = StyleSheet.create({
 
   proficienciesDisplay: {
     position: 'absolute',
-    top: 40,
+    top: 55,
     left: '5%',
-    gap: 5,
   },
 
   // CharacterSheet

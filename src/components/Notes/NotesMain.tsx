@@ -78,15 +78,19 @@ const Notes: React.FC<Props> = ({ navigation }) => {
   const [selectedId, setSelectedId] = useState<string>('1');
   function handleItemSelect(item: ItemData) {
     setSelectedId(item.id.toString())
-    setNoteVisible(true);
 
-    const noteData = notesData.find(item => item.id.toString() == selectedId);
+    updateNote(item.id.toString())
+  }
+
+  function updateNote(noteId: string): void {
+    const noteData = notesData.find(item => item.id.toString() == noteId);
     const allNoteData = [
       noteData?.title,
       noteData?.content,
       noteData?.colour,
     ];
     setNoteData(allNoteData);
+    setNoteVisible(true);
   }
 
   const renderItem = ({item}: {item: ItemData}) => {

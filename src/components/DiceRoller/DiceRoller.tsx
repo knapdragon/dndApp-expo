@@ -100,14 +100,13 @@ const DiceRoller: React.FC<Props> = ({ navigation }) => {
     d12:  0,
     d20:  0,
   });
-
-  const [buffPerDice, setBuffPerDice] = useState<number>(0);
-  const [buffAfterTotal, setBuffAfterTotal] = useState<number>(0);
-  const [total, setTotal] = useState<number>(0);
-
   // reduces diceData to an object where each item is of { name: 0 }
   const customDice = diceData.reduce((acc, die) => ({...acc, [die.name]: 0}), {}); // acc is necessary to function, but is seemingly unused
   const [customDieQuantities, setCustomDieQuantities] = useState<{[key: string]: number}>(customDice);
+  
+  const [buffPerDice, setBuffPerDice] = useState<number>(0);
+  const [buffAfterTotal, setBuffAfterTotal] = useState<number>(0);
+  const [total, setTotal] = useState<number>(0);
 
   const QuantityButtons: React.FC<IQuantityButtonProps> = ({dieType, isCustom}) => {
     return (
@@ -158,7 +157,9 @@ const DiceRoller: React.FC<Props> = ({ navigation }) => {
       setDieQuantities(newDieQuantities);
     } else {
       let newCustomDieQuantities = {...customDieQuantities};
-      newCustomDieQuantities[dieType] -= 1;
+      if (newCustomDieQuantities[dieType] !== 0) {
+        newCustomDieQuantities[dieType] -= 1;
+      }
       setCustomDieQuantities(newCustomDieQuantities);
     }
   }
@@ -178,6 +179,7 @@ const DiceRoller: React.FC<Props> = ({ navigation }) => {
     for (const [key, value] of Object.entries(customDieQuantities)) {
       setCustomDieQuantities({...customDieQuantities, [key]: 0});
     }
+    setCustomDieQuantities({...customDieQuantities, ['d2']: 0}); // above loop doesn't set d2 for some reason?
   }
 
   /**

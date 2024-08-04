@@ -110,13 +110,17 @@ const SheetList: React.FC<Props> = ({ navigation }) => {
   );
 
   const [selectedId, setSelectedId] = useState<string>();
-  const handleItemSelect = useCallback((item: ItemData) => {
+  function handleItemSelect(item: ItemData) {
     setSelectedId(item.id.toString())
-    var characterSheetData = sheetsData[Number(selectedId) - 1];
+    updateSheet(item.id.toString())
+  };
+
+  function updateSheet(sheetId: string) {
+    var characterSheetData = sheetsData[Number(sheetId) - 1];
     setCharSheet(characterSheetData);
 
     setSheetDialogVisible(true);
-  }, [Item]);
+  }
 
   /**
    * Renders FlatList elements as an Item using ItemData props

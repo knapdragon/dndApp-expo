@@ -25,9 +25,12 @@ const Settings: React.FC<Props> = ({ tabOrigin, enabled, closeDialog }) => {
                 <Dialog.Title>Settings</Dialog.Title>
 
                 <Dialog.Content>
-                  <View style={[{display: 'flex'}, {flexDirection: 'row'}, {flexWrap: 'wrap'}, ]}>
+                  <View style={[{display: 'flex'}, {flexDirection: 'row'}]}>
                     <Text>Test Switch</Text>
-                    <Switch value={devTest} onValueChange={() => toggleDevTest(!devTest)} /> 
+                    <Switch 
+                      style={{marginTop: -13, left: 20}}
+                      value={devTest} 
+                      onValueChange={() => toggleDevTest(!devTest)} /> 
                     {/* onValueChange: toggle the switch */}
                   </View>
                 </Dialog.Content>

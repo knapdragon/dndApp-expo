@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, SectionList, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, SectionList, ScrollView, FlatList } from 'react-native';
 
 // styling
 import styles, { Colors } from '../../styles.tsx';
@@ -74,7 +74,7 @@ const NewSheetForm: React.FC<Props> = ({enabled, data, closeForm}) => {
   } else if (formTab === 1 && validSubraceNames.length === 0) {
     actionsTopPosition = 125
   } else if (formTab === 2) {
-    actionsTopPosition = 10
+    actionsTopPosition = 240
   }
 
   const QuantityButtons: React.FC<IQuantityButtonProps> = ({ability}) => {
@@ -139,20 +139,40 @@ const NewSheetForm: React.FC<Props> = ({enabled, data, closeForm}) => {
         break;
       case 'race':
         setRace(input);
-        validSubraces = subracesSRD.filter((subrace) => subrace.race.name === race);
-        setValidSubraceNames(validSubraces.map((subrace) => subrace.name));
+        updateAvailableSubraces(input);
         break;
       case 'subrace':
         setSubrace(input);
         break;
       case 'mainClass':
         setMainClass(input);
-        const map = new Map();
-        setRecommendedProficiencies(classesSRD.find((c) => c.name === mainClass)?.proficiency_choices[0].desc)
+        updateRecommendedProficiences(input);
         break;
     }
   }
 
+  /**
+   * Callback function allowing the subrace dropdown to properly show after selecting a race once.
+   * @param raceForSubraces The race selected
+   */
+  function updateAvailableSubraces(raceForSubraces: string): void {
+    validSubraces = subracesSRD.filter((subrace) => subrace.race.name === raceForSubraces);
+    setValidSubraceNames(validSubraces.map((subrace) => subrace.name));
+  }
+
+  /**
+   * Callback function that properly updates the recommended proficiencies after selecting a class.
+   * @param classForProficiencies The class selected
+   */
+  function updateRecommendedProficiences(classForProficiencies: string): void {
+    const map = new Map();
+    setRecommendedProficiencies(classesSRD.find((c) => c.name === classForProficiencies)?.proficiency_choices[0].desc)
+  }
+
+  /**
+   * Sets a skill proficiency to true or false.
+   * @param proficiency The proficiency to toggle
+   */
   function toggleProficiency(proficiency: string): void {
     let newSkillProficiencies = new Map([...skillProficiencies]);
     newSkillProficiencies.set(proficiency, !newSkillProficiencies.get(proficiency));
@@ -300,22 +320,29 @@ const NewSheetForm: React.FC<Props> = ({enabled, data, closeForm}) => {
               </Picker>
             </View>
 
-            <Divider inset={true} insetType={'middle'} color={'#555'} style={{marginVertical: 5}}/>
+            <Divider inset={true} insetType={'middle'} color={'#555'} style={{marginBottom: 5}}/>
 
             {/* User selects their skill proficiencies */}
             <View style={{flex: 0}}>  
-              <Text style={styles.text}>{recommendedProficiencies?.length === 0 ? 'Choose your proficiencies' : recommendedProficiencies}</Text>
+              <Text style={{top: 5, fontSize: 14}}>
+                {recommendedProficiencies?.length === 0 ? 'Choose your proficiencies' : recommendedProficiencies}
+              </Text>
               <View style={styles.proficienciesDisplay}>
-                <ScrollView>
-                  {skillsSRD.map(skill => (
-                    <View style={{flexDirection: 'row'}}>
-                      <Text style={{fontSize: 14}}>{skill.name}</Text>
-                      <Checkbox 
-                        status={skillProficiencies.get(skill.name) ? 'checked' : 'unchecked'} 
-                        onPress={() => toggleProficiency(skill.name)}/>
-                    </View>
-                  ))}
-                </ScrollView>
+                <FlatList
+                  contentContainerStyle={{gap: 5}}
+                  keyExtractor={(skill) => skill.name}
+                  numColumns={2}
+                  data={skillsSRD}
+                  renderItem={(skill) => 
+                    (
+                      <View style={{flexDirection: 'row', alignItems: 'center', marginHorizontal: 10}}>
+                        <Text style={{fontSize: 14}}>{skill.item.name}</Text>
+                        <Checkbox 
+                          status={skillProficiencies.get(skill.item.name) ? 'checked' : 'unchecked'} 
+                          onPress={() => toggleProficiency(skill.item.name)}/>
+                      </View>
+                    )}
+                  />
               </View>
             </View>
           </Dialog.Content>
