@@ -194,7 +194,24 @@ const styles = StyleSheet.create({
   },
 
   // CharacterSheet
-  
+  sheetHeader: {
+    backgroundColor: '#eee', 
+    paddingVertical: 5,
+  },
+
+  sheetHeaderText: {
+    left: 15, 
+    fontSize: 20
+  },
+
+  closeSearch: {
+    left: '35%', 
+    width: 100, 
+    height: 40, 
+    borderRadius: 30, 
+    padding: 10, 
+    backgroundColor: Colors.common.buttonDelete,
+  },
 
   // Notes
   card: {

@@ -4,6 +4,7 @@ type CharacterSheetType = {
     imageURL: string,
     characterLevel: number,
     race: string,
+    subrace: string,
     mainClass: string,
     multiClass: string[], // could be changed to Record<string, number>[] for specifying multiclass level?
 
@@ -41,31 +42,42 @@ type CharacterSheetType = {
           modifierIntelligence: number,
           modifierWisdom: number,
           modifierCharisma: number,
-        }
-        
-        skillProficiencies: {
-            acrobatics: boolean,
-            animalHandling: boolean,
-            arcana: boolean,
-            athletics: boolean,
-            deception: boolean,
-            history: boolean,
-            insight: boolean,
-            intimidation: boolean,
-            investigation: boolean,
-            medicine: boolean,
-            nature: boolean,
-            perception: boolean,
-            performance: boolean,
-            persuasion: boolean,
-            religion: boolean,
-            sleightOfHand: boolean,
-            stealth: boolean,
-            survival: boolean
-        },
 
-        // name of equipment, and proficiencies are traditionally only ever true or false
-        equipmentProficiencies: Record<string, boolean>[] 
+          savingThrows: {
+              strength: boolean,
+              dexterity: boolean,
+              constitution: boolean,
+              intelligence: boolean,
+              wisdom: boolean,
+              charisma: boolean
+          }
+        }
+
+        proficiencies: {
+            skills: {
+                acrobatics: boolean,
+                "animal-handling": boolean,
+                arcana: boolean,
+                athletics: boolean,
+                deception: boolean,
+                history: boolean,
+                insight: boolean,
+                intimidation: boolean,
+                investigation: boolean,
+                medicine: boolean,
+                nature: boolean,
+                perception: boolean,
+                performance: boolean,
+                persuasion: boolean,
+                religion: boolean,
+                "sleight-of-hand": boolean,
+                stealth: boolean,
+                survival: boolean,
+            },
+
+            // name of equipment, and proficiencies are traditionally only ever true or false
+            equipment: Record<string, boolean>[],
+        }
     },
 
     actions: any[],   // types cannot reasonably be predicted

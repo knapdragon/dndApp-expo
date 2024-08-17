@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Linking } from 'react-native';
 
 // styling
 import styles, { Colors } from '../../../src/styles.tsx';
@@ -70,6 +70,13 @@ const Groups: React.FC<Props> = ({ navigation }) => {
   }
 
   const [searchVisible, setSearchVisible] = useState(false);
+  function checkSearchVisibility() {
+    if (groupModalVisible === true || newGroupFormVisible === true) {
+      return false
+    } else {
+      return true;
+    }
+  }
 
   // Groups-specific states
   const [groupModalVisible, setGroupModalVisible] = useState(false);
@@ -80,7 +87,6 @@ const Groups: React.FC<Props> = ({ navigation }) => {
   }); 
 
   const [selectedId, setSelectedId] = useState<string | undefined>("");
-  
   function handleItemSelect(item: ItemData) {
     setSelectedId(item.id);
     updateGroup(item.id)
@@ -119,6 +125,14 @@ const Groups: React.FC<Props> = ({ navigation }) => {
       />
     );
   };
+
+  function openInBrowser(url: string): void {
+    if (url) {
+      Linking.openURL(url);
+    } else {
+      alert('No URL found');
+    }
+  }
 
   function deleteGroup(): void {
     if (selectedId != undefined) {
@@ -192,6 +206,12 @@ const Groups: React.FC<Props> = ({ navigation }) => {
                 
                 <View style={{flexDirection: 'row', justifyContent: 'center', gap: 40}}>
                   <TouchableOpacity
+                    style={[styles.modalButton, {width: 90}]} 
+                    onPress={() => openInBrowser("https://google.com")}>
+                    <Text style={{textAlign: 'center'}}>Open URL</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
                     style={styles.modalButton} 
                     onPress={() => setGroupModalVisible(false)}>
                     <Text style={{textAlign: 'center'}}>Close</Text>
@@ -211,7 +231,7 @@ const Groups: React.FC<Props> = ({ navigation }) => {
       </PaperProvider>
 
       <FAB
-        visible={!newGroupFormVisible}
+        visible={checkSearchVisibility()}
         color={Colors.groups.primary}
         placement='right'
         icon={{name: 'magnify', type: 'material-community', color: 'black'}}

@@ -5,6 +5,7 @@
         "imageURL": "",
         "characterLevel": 1,
         "race": "Aarakocra",
+        "subrace": "",
         "mainClass": "Cleric",
         "multiClass": ["Fighter"],
 
@@ -38,7 +39,16 @@
                 "modifierConstitution": 0,
                 "modifierIntelligence": 0,
                 "modifierWisdom": 0,
-                "modifierCharisma": 0
+                "modifierCharisma": 0,
+
+                "savingThrows": {
+                    "strength": false,
+                    "dexterity": false,
+                    "constitution": false,
+                    "intelligence": false,
+                    "wisdom": false,
+                    "charisma": false
+                }
             },
 
             "skillProficiencies": {
@@ -104,14 +114,15 @@
         "imageURL": "",
         "characterLevel": 1,
         "race": "Human",
+        "subrace": "",
         "mainClass": "NPC",
         "multiClass": [],
 
         "attributes": {
             "proficiencyBonus": 2,
 
-            "hitPointsCurrent": 10,
-            "hitPointsMax": 10,
+            "hitPointsCurrent": 4,
+            "hitPointsMax": 4,
             "hitPointsTemporary": 0,
             "armourClass": 10,
 
@@ -137,32 +148,43 @@
                 "modifierConstitution": 0,
                 "modifierIntelligence": 0,
                 "modifierWisdom": 0,
-                "modifierCharisma": 0
+                "modifierCharisma": 0,
+
+                "savingThrows": {
+                    "strength": false,
+                    "dexterity": false,
+                    "constitution": false,
+                    "intelligence": false,
+                    "wisdom": false,
+                    "charisma": false
+                }
             },
 
-            "skillProficiencies": {
-                "acrobatics": false,
-                "animalHandling": false,
-                "arcana": false,
-                "athletics": false,
-                "deception": false,
-                "history": false,
-                "insight": false,
-                "intimidation": false,
-                "investigation": false,
-                "medicine": false,
-                "nature": false,
-                "perception": false,
-                "performance": false,
-                "persuasion": false,
-                "religion": false,
-                "sleightOfHand": false,
-                "stealth": false,
-                "survival": false
-            },
-
-            "equipmentProficiencies": {
-                "simpleWeapons": true
+            "proficiencies": {
+                "skills": {
+                    "acrobatics": false,
+                    "animal-handling": false,
+                    "arcana": false,
+                    "athletics": false,
+                    "deception": false,
+                    "history": false,
+                    "insight": false,
+                    "intimidation": false,
+                    "investigation": false,
+                    "medicine": false,
+                    "nature": false,
+                    "perception": false,
+                    "performance": false,
+                    "persuasion": false,
+                    "religion": false,
+                    "sleight-of-hand": false,
+                    "stealth": false,
+                    "survival": false
+                },
+                
+                "equipment": {
+                    "simpleWeapons": true
+                }
             }
         },
 
@@ -186,8 +208,8 @@
                     "quantity": 1
                 },
                 {
-                    "name": "Potion of Healing", 
-                    "category": "Magic Items",
+                    "name": "Dagger", 
+                    "category": "Weapons",
                     "quantity": 1
                 }
             ]

@@ -1,61 +1,17 @@
 import React, { useCallback, useState } from 'react';
 import { Text, FlatList, TouchableNativeFeedback, View, TouchableOpacity } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 // styling
 import styles from '../../styles';
 import { Menu as PaperMenu, Button, Dialog } from 'react-native-paper';
-import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
 // data
-import { Character } from './CharacterSheet';
-import { Actions } from './CharacterSheet';
-import { Inventory } from './CharacterSheet';
+import { SheetNavigation } from './SheetNavigation';
 import sheetsData from '../../userdata/sheetsData.json';
 import CharacterSheetType from '../../userdata/sheetsDataType';
 
 interface Props {
   navigation: any
-}
-
-const Tab = createMaterialTopTabNavigator();
-
-export const SheetNavigation: React.FC<Props> = ({}) => {
-  return (
-    <NavigationContainer independent={true}>
-      <Tab.Navigator
-        style={{padding: -30, borderBottomWidth: 1, borderBottomColor: 'silver'}}
-        initialRouteName='Character' 
-        backBehavior={'history'}>
-        <Tab.Screen 
-          name="Character"    // @ts-expect-error (affects next line)
-          component={Character}
-          options={{
-            lazy: true,
-            tabBarPressColor: '#ccf',
-            tabBarIcon: ({}) => (<Icon name="account" color={'blue'} size={20}/>)}}/>
-
-        <Tab.Screen 
-          name="Actions"      // @ts-expect-error (affects next line)
-          component={Actions}
-          options={{
-            lazy: true,
-            tabBarPressColor: '#fcc',
-            tabBarIndicatorStyle: {backgroundColor: '#f00'},
-            tabBarIcon: ({}) => (<Icon name="sword-cross" color={'red'} size={20}/>)}}/>
-
-        <Tab.Screen 
-          name="Inventory"    // @ts-expect-error (affects next line)
-          component={Inventory}
-          options={{
-            lazy: true,
-            tabBarPressColor: '#cfc',
-            tabBarIndicatorStyle: {backgroundColor: '#090'},
-            tabBarIcon: ({}) => (<Icon name="sack" color={'green'} size={20}/>)}}/>
-      </Tab.Navigator>
-    </NavigationContainer>
-  )
 }
 
 const SheetList: React.FC<Props> = ({ navigation }) => {
@@ -213,12 +169,12 @@ const SheetList: React.FC<Props> = ({ navigation }) => {
 
           <Dialog.Content>
             <Dialog.ScrollArea style={{height: '80%'}}>
-                <FlatList 
-                  style={{marginHorizontal: -48, marginBottom: -40}}
-                  data={[]}
-                  renderItem={null}
-                  ListFooterComponent={<SheetNavigation navigation={navigation}/>}
-                  />
+              <FlatList 
+                style={{marginHorizontal: -48, marginBottom: -40}}
+                data={[]}
+                renderItem={null}
+                ListFooterComponent={<SheetNavigation navigation={navigation} characterId={selectedId}/>}
+                />
             </Dialog.ScrollArea>
           </Dialog.Content>
 

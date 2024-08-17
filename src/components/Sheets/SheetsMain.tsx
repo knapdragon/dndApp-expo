@@ -1,10 +1,9 @@
 import React, { useState, useContext } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 
 // Styling
 import styles from '../../styles.tsx';
 import { Appbar } from 'react-native-paper';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Data
@@ -32,13 +31,15 @@ const Sheets: React.FC<Props> = ({ navigation }) => {
   }
   const [newMenuVisible, setNewMenuVisible] = useState(false);
   const [newSheetFormVisible, setNewSheetFormVisible] = useState(false);
-  function openNewSheetForm (): void {
+  function openNewSheetForm(): void {
     setNewSheetFormVisible(true);
     setNewMenuVisible(false);
+    setFormTab(1);
   }
   function closeNewSheetForm(): void {
     setNewSheetFormVisible(false);
   }
+  const [formTab, setFormTab] = useState<number>(1);
 
   // Sheets starts
   return (
@@ -63,7 +64,9 @@ const Sheets: React.FC<Props> = ({ navigation }) => {
       <NewSheetForm 
         enabled={newSheetFormVisible}
         data={sheetsData}
-        closeForm={closeNewSheetForm}/>
+        closeForm={closeNewSheetForm}
+        formTab={formTab}
+        setFormTab={setFormTab}/>
       
       <View style={styles.container}>
         <Stack.Navigator screenOptions={{headerShown: false}}>

@@ -16,20 +16,21 @@ import classesSRD from '../../assets/srd_compendium/JSON/5e-SRD-Classes.json';
 import subclassesSRD from '../../assets/srd_compendium/JSON/5e-SRD-Subclasses.json';
 import classesCustom from '../../userdata/compendium_custom/classes_custom.js';
 import skillsSRD from '../../assets/srd_compendium/JSON/5e-SRD-Skills.json';
+import CharacterSheetType from '../../userdata/sheetsDataType.ts';
 
 interface Props {
   enabled: boolean,
   data: any,
   closeForm: () => void,
+  formTab: number,
+  setFormTab: (n: number) => void
 }
 
 interface IQuantityButtonProps {
   ability: string,
 }
 
-const NewSheetForm: React.FC<Props> = ({enabled, data, closeForm}) => {
-  const [formTab, setFormTab] = useState<number>(1);
-
+const NewSheetForm: React.FC<Props> = ({enabled, data, closeForm, formTab, setFormTab}) => {
   const sheetsData = data;
   const [name, setName] = useState("");
   const [race, setRace] = useState("Human");
@@ -38,7 +39,7 @@ const NewSheetForm: React.FC<Props> = ({enabled, data, closeForm}) => {
   const [validSubraceNames, setValidSubraceNames] = useState<Array<string>>(
     validSubraces.map((subrace: any) => subrace.name)
   )
-  const [mainClass, setMainClass] = useState("");
+  const [mainClass, setMainClass] = useState("Fighter");
   const [abilityScores, setAbilityScores] = useState<{[key: string]: number}>({
     str: 10,
     dex: 10,
@@ -57,7 +58,7 @@ const NewSheetForm: React.FC<Props> = ({enabled, data, closeForm}) => {
     }
     return map;
   });
-  const [recommendedProficiencies, setRecommendedProficiencies] = useState<string | undefined>("")
+  const [recommendedProficiencies, setRecommendedProficiencies] = useState<string>("")
 
   let formHeight = 550;
   if (formTab === 1 && validSubraceNames.length > 0) {
@@ -166,7 +167,7 @@ const NewSheetForm: React.FC<Props> = ({enabled, data, closeForm}) => {
    */
   function updateRecommendedProficiences(classForProficiencies: string): void {
     const map = new Map();
-    setRecommendedProficiencies(classesSRD.find((c) => c.name === classForProficiencies)?.proficiency_choices[0].desc)
+    setRecommendedProficiencies(classesSRD.find((c) => c.name === classForProficiencies)!.proficiency_choices[0].desc)
   }
 
   /**
@@ -181,20 +182,81 @@ const NewSheetForm: React.FC<Props> = ({enabled, data, closeForm}) => {
 
   /**
    * Creates a new sheet in the sheetsData array with the form inputs.
+   * This sets name, race, class, ability scores, saving throws, and skill and equipment proficiencies. 
    * @param name The character's name
    * @param race The character's race
    * @param mainClass The character's class
    */
-  function newSheet(name: string, race: string, mainClass: string): void {
+  function newSheet(): void {
     const newSheetId = sheetsData.length + 1;
 
-    const newSheet = {
+    // define character's saving throws, based on class
+    let newSavingThrows = sheetsData[1].attributes.abilities.savingThrows
+    const classSavingThrows = classesSRD.find((c) => c.name === mainClass)!.saving_throws
+    for (let i = 0; i < classSavingThrows.length; i++) {
+      switch (classSavingThrows[i].index) {
+        case "str":
+          newSavingThrows['strength'] = true
+        case 'dex':
+          newSavingThrows['dexterity'] = true
+        case 'con':
+          newSavingThrows['constitution'] = true
+        case 'int':
+          newSavingThrows['intelligence'] = true
+        case 'wis':
+          newSavingThrows['wisdom'] = true
+        case 'cha':
+          newSavingThrows['charisma'] = true
+      }
+    }
+
+    // default values are all false
+    const newSkillProficiencies = sheetsData[1].attributes.proficiencies.skills
+    for (const [key, value] of skillProficiencies) {
+      // for each skill in skillProficiencies, get the name for use in newProficiencies
+      let name = skillsSRD.find((skill) => skill.name === key)!.index
+      if (value) {
+        // if proficiency is true (enabled by the user), set to true in newProficiencies
+        newSkillProficiencies[name] = true
+      } else {
+        // reset to false if disabled
+        newSkillProficiencies[name] = false
+      }
+    }
+
+    // equipment proficiencies are that of the class's
+    const newEquipmentProficiencies = classesSRD.find((c) => c.name === mainClass)!.proficiencies
+    // remove saving throws included in class proficiency list
+    let toRemove = newEquipmentProficiencies.filter((proficiency) => proficiency.name.includes("Saving Throw"));
+    for (let i = 0; i < toRemove.length; i++) {
+      newEquipmentProficiencies.splice(newEquipmentProficiencies.indexOf(toRemove[0]), 1);
+    }
+
+    const newSheet: CharacterSheetType = {
+      ...sheetsData[1],   // copy default values, as recorded in 'Yane Loe'
       id: newSheetId.toString(),
       name: name,
-      subrace: subrace,
       race: race,
+      subrace: subrace,
       characterLevel: 1,
       mainClass: mainClass,
+      attributes: {
+        abilities: {
+          strength:     abilityScores.str,
+          dexterity:    abilityScores.dex,
+          constitution: abilityScores.con,
+          intelligence: abilityScores.int,
+          wisdom:       abilityScores.wis,
+          charisma:     abilityScores.cha,
+
+          savingThrows: newSavingThrows,
+        },
+
+        proficiencies: {
+          skills: newSkillProficiencies,
+          equipment: newEquipmentProficiencies,
+        }
+      }
     };
 
     const newTestSheet = {
@@ -357,7 +419,7 @@ const NewSheetForm: React.FC<Props> = ({enabled, data, closeForm}) => {
 
               <TouchableOpacity
                 style={[styles.newSheetButton, {paddingHorizontal: 10, backgroundColor: Colors.common.buttonApplyCreate}]} 
-                onPress={() => newSheet(name, race, mainClass)}>
+                onPress={() => newSheet()}>
                 <Text style={{textAlign: 'center'}}>Create</Text>
               </TouchableOpacity>
 
